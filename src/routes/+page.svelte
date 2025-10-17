@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Cookies from "$lib/components/Cookies.svelte";
 	import CourseSelection from "$lib/components/CourseSelection.svelte";
 	import CourseWorkSelection from "$lib/components/CourseWorkSelection.svelte";
 	import Google from "$lib/components/Google.svelte";
@@ -6,9 +7,12 @@
     let tokenResponse: any = $state(null);
     
     let courseSelected: number | null = $state(null);
+    let courseworkSelected: number | null = $state(null);
 </script>
-<h1 class="text-center text-5xl p-4">Auto Java Grader</h1>
 
+<Cookies/>
+
+<h1 class="text-center text-5xl p-4">Auto Java Grader</h1>
 <div class="flex justify-center w-full m-auto gap-3">
     <Google bind:tokenResponse/>
 </div>
@@ -18,7 +22,12 @@
             <CourseSelection bind:tokenResponse bind:courseSelected/>
 
             {#if courseSelected}
-                <CourseWorkSelection bind:tokenResponse bind:courseSelected/>
+                <CourseWorkSelection bind:tokenResponse bind:courseSelected bind:courseworkSelected/>
+
+                {#if courseworkSelected}
+                    <p class="my-4">You have selected coursework {courseworkSelected} under course {courseSelected}. Proceeding will take you to the grading dashboard. If you wish to return here, reload the page.</p>
+                    <button type="button" class="btn preset-filled-primary-500">Go to dashboard</button>
+                {/if}
             {/if}
         {/if}
     </div>

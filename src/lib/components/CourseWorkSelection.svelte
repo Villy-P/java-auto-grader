@@ -1,5 +1,5 @@
 <script lang="ts">
-    let { tokenResponse = $bindable(), courseSelected = $bindable() } = $props();
+    let { tokenResponse = $bindable(), courseSelected = $bindable(), courseworkSelected = $bindable() } = $props();
     
     async function getCourseWork() {
         if (!tokenResponse || !tokenResponse.access_token || !courseSelected)
@@ -24,7 +24,7 @@
     {#if courseWork && courseWork.courseWork && courseWork.courseWork.length > 0}
         <label class="label">
             <span class="label-text">Course Work</span>
-            <select class="select">
+            <select class="select" bind:value={courseworkSelected}>
                 {#each courseWork.courseWork as work}
                     <option value={work.id}>{work.title}</option>
                 {/each}

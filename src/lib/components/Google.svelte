@@ -5,6 +5,13 @@
     let { tokenResponse = $bindable() } = $props();
 
     onMount(() => {
+        const cookie = document.cookie.split('; ').find(row => row.startsWith('g_token='));
+        if (cookie) {
+            const token = cookie.split('=')[1];
+            tokenResponse = { access_token: token };
+            return;
+        }
+
         // @ts-ignore
         tokenClient = google.accounts.oauth2.initTokenClient({
             client_id: '315808916557-l71t37pku56pahaumffp45o11h1u145f.apps.googleusercontent.com',
@@ -14,11 +21,9 @@
             ].join(' '),
             callback: (token: any) => {
                 tokenResponse = token;
+                document.cookie = `g_token=${token.access_token}; path=/; max-age=${token.expires_in}`;
             },
         });
-
-        // @ts-ignore
-        google.accounts.id.renderButton( document.getElementById("g_id_signin"), { theme: "filled_black", colorScheme: "dark", size: "large" } );
     });
 
     function requestAccessToken() {
