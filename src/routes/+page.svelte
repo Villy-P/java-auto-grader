@@ -16,7 +16,7 @@
         return result;
     }
 
-    let classroomCourses = $derived(getCourses());
+    let classroomCourses: Promise<{courses: ClassroomCourse[]}> = $derived(getCourses());
 </script>
 <h1 class="text-center text-5xl p-4">Auto Java Grader</h1>
 
