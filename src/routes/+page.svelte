@@ -73,7 +73,7 @@
                 {#if courseWork && courseWork.courseWork && courseWork.courseWork.length > 0}
                     <label class="label">
                         <span class="label-text">Course Work</span>
-                        <select class="select" bind:value={courseSelected}>
+                        <select class="select">
                             {#each courseWork.courseWork as work}
                                 <option value={work.id}>{work.title}</option>
                             {/each}
