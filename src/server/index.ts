@@ -1,6 +1,7 @@
 import express from 'express';
 import path from 'path';
 import cors from 'cors';
+import child_process from 'child_process';
 import {promises} from 'fs';
 import { fileURLToPath } from 'url';
 
@@ -15,7 +16,6 @@ app.use(express.text({ type: '*/*', limit: '500kb' }));
 app.use(cors());
 
 app.post("/run-java-file/:filename", async (req, res) => {
-    console.log("Got data:", req.params.filename, req.body);
     const fileName = req.params.filename;
     const fileContent = req.body;
     const filePath = `${OUT_DIR}/${fileName}.java`;
@@ -23,7 +23,21 @@ app.post("/run-java-file/:filename", async (req, res) => {
     await promises.mkdir(OUT_DIR, { recursive: true });
     
     promises.writeFile(filePath, fileContent, 'utf-8');
-    res.send(`Java file ${fileName}.java created successfully at ${filePath}`);
+
+    child_process.exec(`javac ${filePath}`, (error, stdout, stderr) => {
+        if (error) {
+            res.status(500).send(`Compilation error: ${stderr}`);
+            return;
+        }
+
+        child_process.exec(`java -cp ${OUT_DIR} ${fileName}`, (error, stdout, stderr) => {
+            if (error) {
+                res.status(500).send(`Runtime error: ${stderr}`);
+                return;
+            }
+            res.send(`Program output:\n${stdout}`);
+        });
+    });
 });
 
 app.listen(PORT, () => {
