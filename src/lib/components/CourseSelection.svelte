@@ -26,7 +26,7 @@
             <span class="label-text">Courses</span>
             <select class="select" bind:value={courseSelected}>
                 {#each courses.courses as course}
-                    <option value={course.id}>{course.name}</option>
+                    <option value={course}>{course.name}</option>
                 {/each}
             </select>
         </label>

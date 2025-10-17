@@ -2,6 +2,7 @@
 	import Cookies from "$lib/components/Cookies.svelte";
 	import CourseSelection from "$lib/components/CourseSelection.svelte";
 	import CourseWorkSelection from "$lib/components/CourseWorkSelection.svelte";
+	import Dashboard from "$lib/components/Dashboard.svelte";
 	import Google from "$lib/components/Google.svelte";
 
     let tokenResponse: any = $state(null);
@@ -9,10 +10,10 @@
     let courseSelected: number | null = $state(null);
     let courseworkSelected: number | null = $state(null);
 
-    let appState: State = $state(State.INITIAL);
+    let appState: string = $state("initial");
 
     function proceedToDashboard() {
-        appState = State.DASHBOARD;
+        appState = "dashboard";
     }
 </script>
 
@@ -25,7 +26,7 @@
 <div class="flex flex-col items-center w-full">
     <div class="w-2/3">
         {#if tokenResponse}
-            {#if appState === State.INITIAL}
+            {#if appState === "initial"}
                 <CourseSelection bind:tokenResponse bind:courseSelected/>
 
                 {#if courseSelected}
@@ -36,8 +37,8 @@
                         <button type="button" class="btn preset-filled-primary-500" onclick={proceedToDashboard}>Go to dashboard</button>
                     {/if}
                 {/if}
-            {:else if appState === State.DASHBOARD}
-                <p>You are on the dashboard.</p>
+            {:else if appState === "dashboard"}
+                <Dashboard/>
             {/if}
         {/if}
     </div>

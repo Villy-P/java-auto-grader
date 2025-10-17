@@ -4,7 +4,7 @@
     async function getCourseWork() {
         if (!tokenResponse || !tokenResponse.access_token || !courseSelected)
             return null;
-        const data = await fetch(`https://classroom.googleapis.com/v1/courses/${courseSelected}/courseWork`, {
+        const data = await fetch(`https://classroom.googleapis.com/v1/courses/${courseSelected.id}/courseWork`, {
             headers: {
                 Authorization: `Bearer ${tokenResponse.access_token}`
             }
@@ -26,7 +26,7 @@
             <span class="label-text">Course Work</span>
             <select class="select" bind:value={courseworkSelected}>
                 {#each courseWork.courseWork as work}
-                    <option value={work.id}>{work.title}</option>
+                    <option value={work}>{work.title}</option>
                 {/each}
             </select>
         </label>
