@@ -6,7 +6,7 @@
     async function getCourses() {
         if (!tokenResponse || !tokenResponse.access_token)
             return null;
-        const data = await fetch('https://classroom.googleapis.com/v1/courses', {
+        const data = await fetch('https://classroom.googleapis.com/v1/courses?teacherId=me', {
             headers: {
                 Authorization: `Bearer ${tokenResponse.access_token}`
             }
@@ -44,7 +44,7 @@
                         </select>
                     </label>
                 {:else}
-                    <p>No courses found.</p>
+                    <p>Couldn't find a course you teach.</p>
                 {/if}
             {:catch error}
                 <p class="text-red-500">Error fetching courses: {error.message}</p>
