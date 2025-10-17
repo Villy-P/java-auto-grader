@@ -23,4 +23,4 @@
     }
 </script>
 
-<button type="button" class="btn preset-filled" onclick={requestAccessToken}>Sign in with Google</button>
+<button type="button" class="btn preset-filled" onclick={requestAccessToken}>{tokenResponse ? "Success!" : "Sign in with Google"}</button>
