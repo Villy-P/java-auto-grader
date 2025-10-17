@@ -8,6 +8,12 @@
     
     let courseSelected: number | null = $state(null);
     let courseworkSelected: number | null = $state(null);
+
+    let appState: State = $state(State.INITIAL);
+
+    function proceedToDashboard() {
+        appState = State.DASHBOARD;
+    }
 </script>
 
 <Cookies/>
@@ -19,15 +25,19 @@
 <div class="flex flex-col items-center w-full">
     <div class="w-2/3">
         {#if tokenResponse}
-            <CourseSelection bind:tokenResponse bind:courseSelected/>
+            {#if appState === State.INITIAL}
+                <CourseSelection bind:tokenResponse bind:courseSelected/>
 
-            {#if courseSelected}
-                <CourseWorkSelection bind:tokenResponse bind:courseSelected bind:courseworkSelected/>
+                {#if courseSelected}
+                    <CourseWorkSelection bind:tokenResponse bind:courseSelected bind:courseworkSelected/>
 
-                {#if courseworkSelected}
-                    <p class="my-4">You have selected coursework {courseworkSelected} under course {courseSelected}. Proceeding will take you to the grading dashboard. If you wish to return here, reload the page.</p>
-                    <button type="button" class="btn preset-filled-primary-500">Go to dashboard</button>
+                    {#if courseworkSelected}
+                        <p class="my-4">You have selected coursework {courseworkSelected} under course {courseSelected}. Proceeding will take you to the grading dashboard. If you wish to return here, reload the page.</p>
+                        <button type="button" class="btn preset-filled-primary-500" onclick={proceedToDashboard}>Go to dashboard</button>
+                    {/if}
                 {/if}
+            {:else if appState === State.DASHBOARD}
+                <p>You are on the dashboard.</p>
             {/if}
         {/if}
     </div>
