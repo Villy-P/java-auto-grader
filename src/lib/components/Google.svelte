@@ -27,5 +27,8 @@
 </script>
 
 {#if !tokenResponse}
-    <button type="button" class="btn preset-filled" onclick={requestAccessToken}>Sign in with Google</button>
+    <button type="button" class="btn preset-tonal-primary flex items-center justify-center" onclick={requestAccessToken}>
+        <img src="/google.svg" alt="Google Logo" class="w-6 h-6 mr-2"/>
+        <span>Sign in with Google</span>
+    </button>
 {/if}
