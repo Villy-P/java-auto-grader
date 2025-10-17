@@ -15,6 +15,15 @@ const OUT_DIR = path.join(__dirname, 'submissions');
 app.use(express.text({ type: '*/*', limit: '500kb' }));
 app.use(cors());
 
+app.post("/upload-txt-file/:filename", async (req, res) => {
+    const fileName = req.params.filename;
+    const fileContent = req.body;
+    const filePath = `${OUT_DIR}/${fileName}.txt`;
+    await promises.mkdir(OUT_DIR, { recursive: true });
+    await promises.writeFile(filePath, fileContent, 'utf-8');
+    res.send(`File ${fileName}.txt uploaded successfully.`);
+});
+
 app.post("/run-java-file/:filename", async (req, res) => {
     const fileName = req.params.filename;
     const fileContent = req.body;
