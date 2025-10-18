@@ -5,7 +5,7 @@
         courseworkSelected: gapi.client.classroom.CourseWork | null
     } = $props();
 
-    let users: Map<string, any> = new Map();
+    let users: Map<string, gapi.client.classroom.UserProfile> = new Map();
     
     async function getStudentSubmissions() {
         if (!tokenResponse || !tokenResponse.access_token || !courseSelected || !courseworkSelected)
@@ -54,8 +54,8 @@
             {#if studentSubmissions && studentSubmissions.studentSubmissions && studentSubmissions.studentSubmissions.length > 0}
                 {#each Array.from(users.values()) as user}
                     <div class="border-b p-2">
-                        <p class="font-bold">{user.name.fullName}</p>
-                        <p class="text-sm text-gray-600">{user.emailAddress}</p>
+                        <p class="font-bold">{user.name?.fullName}</p>
+                        <p class="text-sm">{user.emailAddress}</p>
                     </div>
                 {/each}
             {:else}

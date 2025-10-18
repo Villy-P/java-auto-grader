@@ -18,7 +18,8 @@
             scope: [
                 'https://www.googleapis.com/auth/classroom.courses.readonly',
                 'https://www.googleapis.com/auth/classroom.coursework.students.readonly',
-                'https://www.googleapis.com/auth/classroom.rosters.readonly'
+                'https://www.googleapis.com/auth/classroom.rosters.readonly',
+                'https://www.googleapis.com/auth/classroom.profile.emails',
             ].join(' '),
             callback: (token: any) => {
                 tokenResponse = token;
