@@ -27,6 +27,7 @@
 		"@tailwindcss/vite": "^4.1.13",
 		"@types/cors": "^2.8.19",
 		"@types/express": "^5.0.3",
+		"@types/gapi.client.classroom": "^1.0.15",
 		"@types/node": "^22",
 		"eslint": "^9.36.0",
 		"eslint-config-prettier": "^10.1.8",
@@ -46,6 +47,7 @@
 		"@lucide/svelte": "^0.546.0",
 		"child_process": "^1.0.2",
 		"cors": "^2.8.5",
-		"express": "^5.1.0"
+		"express": "^5.1.0",
+		"googleapis": "^164.0.0"
 	}
 }

@@ -6,9 +6,9 @@
 	import Google from "$lib/components/Google.svelte";
 
     let tokenResponse: any = $state(null);
-    
-    let courseSelected: ClassroomCourse | null = $state(null);
-    let courseworkSelected: any | null = $state(null);
+
+    let courseSelected: gapi.client.classroom.Course | null = $state(null);
+    let courseworkSelected: gapi.client.classroom.CourseWork | null = $state(null);
 
     let appState: string = $state("initial");
 
@@ -27,7 +27,7 @@
     <div class="w-2/3">
         {#if tokenResponse}
             {#if appState === "initial"}
-                <CourseSelection bind:tokenResponse bind:courseSelected/>
+                <CourseSelection bind:tokenResponse bind:courseSelected bind:courseworkSelected/>
 
                 {#if courseSelected}
                     <CourseWorkSelection bind:tokenResponse bind:courseSelected bind:courseworkSelected/>

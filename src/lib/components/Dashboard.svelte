@@ -1,10 +1,14 @@
 <script lang="ts">
-    let { tokenResponse = $bindable(), courseSelected = $bindable(), courseworkSelected = $bindable() } = $props();
+    let { tokenResponse = $bindable(), courseSelected = $bindable(), courseworkSelected = $bindable() }: {
+        tokenResponse: any,
+        courseSelected: gapi.client.classroom.Course | null,
+        courseworkSelected: gapi.client.classroom.CourseWork | null
+    } = $props();
 
     let users: Map<string, any> = new Map();
     
     async function getStudentSubmissions() {
-        if (!tokenResponse || !tokenResponse.access_token || !courseSelected)
+        if (!tokenResponse || !tokenResponse.access_token || !courseSelected || !courseworkSelected)
             return null;
         const data = await fetch(`https://classroom.googleapis.com/v1/courses/${courseSelected.id}/courseWork/${courseworkSelected.id}/studentSubmissions`, {
             headers: {
@@ -21,7 +25,7 @@
         profiles.forEach((profile, i) => {
             users.set(studentSubmissions[i].userId, profile);
         });
-        
+
         return result;
     }
 

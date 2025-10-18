@@ -1,5 +1,9 @@
 <script lang="ts">
-    let { tokenResponse = $bindable(), courseSelected = $bindable() } = $props();
+    let { tokenResponse = $bindable(), courseSelected = $bindable(), courseworkSelected = $bindable() }: {
+        tokenResponse: any,
+        courseSelected: gapi.client.classroom.Course | null,
+        courseworkSelected: gapi.client.classroom.CourseWork | null
+    } = $props();
 
     async function getCourses() {
         if (!tokenResponse || !tokenResponse.access_token)
