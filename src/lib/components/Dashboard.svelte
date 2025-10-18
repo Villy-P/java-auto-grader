@@ -37,14 +37,12 @@
             let javaContent: string | null = null;
 
             if (javaSubmissions[i] && javaSubmissions[i].attachments && javaSubmissions[i].attachments.length > 0) {
-                const fileId = javaSubmissions[i].attachments[0].driveFile.id;
+                const fileId: any = javaSubmissions[i].attachments[0].driveFile.id;
                 const downloadUrl = javaSubmissions[i].attachments[0].driveFile.alternateLink + `&alt=media`;
 
-                const fileRes = await fetch(downloadUrl, {
-                    headers: { Authorization: `Bearer ${tokenResponse.access_token}` }
-                });
-
-                javaContent = await fileRes.text();
+                const res = await fetch('/api/download-java/' + fileId);
+                const fileJson = await res.json();
+                javaContent = fileJson?.content ?? (typeof fileJson === 'string' ? fileJson : JSON.stringify(fileJson));
             }
 
             const student = new Student(studentSubmissions[i].userId, profile, javaContent || "");
