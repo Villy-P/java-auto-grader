@@ -1,11 +1,13 @@
 <script lang="ts">
+	import { Student } from "$lib/scripts/user";
+
     let { tokenResponse = $bindable(), courseSelected = $bindable(), courseworkSelected = $bindable() }: {
         tokenResponse: any,
         courseSelected: gapi.client.classroom.Course | null,
         courseworkSelected: gapi.client.classroom.CourseWork | null
     } = $props();
 
-    let users: Map<string, gapi.client.classroom.UserProfile> = new Map();
+    let users: Student[] = [];
     
     async function getStudentSubmissions() {
         if (!tokenResponse || !tokenResponse.access_token || !courseSelected || !courseworkSelected)
@@ -22,16 +24,42 @@
             studentSubmissions.map((sub: any) => getStudentProfile(sub.userId))
         );
 
-        profiles.forEach((profile, i) => {
-            users.set(studentSubmissions[i].userId, profile);
+        profiles.forEach(async (profile, i) => {
+            const javaSubmissions = studentSubmissions
+                .map((sub: any) => ({
+                    userId: sub.userId,
+                    attachments: sub.assignmentSubmission?.attachments?.filter((att: any) => 
+                    att.driveFile?.title.endsWith('.java')
+                    )
+                }))
+                .filter((sub: any) => sub.attachments && sub.attachments.length > 0);
+
+            let javaContent: string | null = null;
+
+            if (javaSubmissions[i] && javaSubmissions[i].attachments && javaSubmissions[i].attachments.length > 0) {
+                const fileId = javaSubmissions[i].attachments[0].driveFile.id;
+                const downloadUrl = javaSubmissions[i].attachments[0].driveFile.alternateLink + `&alt=media`;
+
+                const fileRes = await fetch(downloadUrl, {
+                    headers: { Authorization: `Bearer ${tokenResponse.access_token}` }
+                });
+
+                javaContent = await fileRes.text();
+            }
+
+            const student = new Student(studentSubmissions[i].userId, profile, javaContent || "");
+            users.push(student);
         });
+
+        console.log(users);
 
         return result;
     }
 
     async function getStudentProfile(userId: string) {
-        if (users.has(userId))
-            return users.get(userId);
+        const user = users.find(u => u.id === userId);
+        if (user)
+            return user.data;
         if (!tokenResponse || !tokenResponse.access_token)
             return null;
         const data = await fetch(`https://classroom.googleapis.com/v1/userProfiles/${userId}`, {
@@ -44,6 +72,8 @@
     }
 
     let classroomStudentSubmissions = $derived(getStudentSubmissions());
+
+    let selectedStudent: string | undefined = $state(undefined);
 </script>
 
 <div class="w-full h-screen flex">
@@ -52,11 +82,11 @@
             <p>Loading your submissions...</p>
         {:then studentSubmissions} 
             {#if studentSubmissions && studentSubmissions.studentSubmissions && studentSubmissions.studentSubmissions.length > 0}
-                {#each Array.from(users.values()) as user}
-                    <div class="border-b p-2">
-                        <p class="font-bold">{user.name?.fullName}</p>
-                        <p class="text-sm">{user.emailAddress}</p>
-                    </div>
+                {#each users as user}
+                    <button class:bg-gray-900={selectedStudent === user.id} class="border-b p-2 cursor-pointer w-full text-left" onclick={() => selectedStudent = user.id}>
+                        <p class="font-bold">{user.data.name?.fullName}</p>
+                        <p class="text-sm">{user.data.emailAddress}</p>
+                    </button>
                 {/each}
             {:else}
                 <p>Couldn't find any submissions.</p>
