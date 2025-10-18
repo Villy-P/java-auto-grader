@@ -47,7 +47,7 @@
 </script>
 
 <div class="w-full h-screen flex">
-    <div class="w-1/3">
+    <div class="w-1/3 max-h-screen overflow-y-auto border-r">
         {#await classroomStudentSubmissions}
             <p>Loading your submissions...</p>
         {:then studentSubmissions} 

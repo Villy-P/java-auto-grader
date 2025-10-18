@@ -19,14 +19,16 @@
 
 <Cookies/>
 
-<h1 class="text-center text-5xl p-4">Auto Java Grader</h1>
-<div class="flex justify-center w-full m-auto gap-3">
-    <Google bind:tokenResponse/>
-</div>
+{#if appState === "initial"}
+    <h1 class="text-center text-5xl p-4">Auto Java Grader</h1>
+    <div class="flex justify-center w-full m-auto gap-3">
+        <Google bind:tokenResponse/>
+    </div>
+{/if}
 <div class="flex flex-col items-center w-full">
-    <div class="w-2/3">
-        {#if tokenResponse}
-            {#if appState === "initial"}
+    {#if tokenResponse}
+        {#if appState === "initial"}
+            <div class="w-2/3">           
                 <CourseSelection bind:tokenResponse bind:courseSelected bind:courseworkSelected/>
 
                 {#if courseSelected}
@@ -37,9 +39,9 @@
                         <button type="button" class="btn preset-filled-primary-500" onclick={proceedToDashboard}>Go to dashboard</button>
                     {/if}
                 {/if}
-            {:else if appState === "dashboard"}
-                <Dashboard bind:tokenResponse bind:courseSelected bind:courseworkSelected/>
-            {/if}
+            </div>
+        {:else if appState === "dashboard"}
+            <Dashboard bind:tokenResponse bind:courseSelected bind:courseworkSelected/>
         {/if}
-    </div>
+    {/if}
 </div>
