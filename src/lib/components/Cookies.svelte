@@ -2,7 +2,10 @@
 	import Cookie from "@lucide/svelte/icons/cookie";
 
     function clearCookies() {
-        document.cookie = "";
+        document.cookie.split(";").forEach(function(c) { 
+            document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); 
+        });
+        location.reload();
     }
 </script>
 

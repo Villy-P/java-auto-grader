@@ -7,8 +7,8 @@
 
     let tokenResponse: any = $state(null);
     
-    let courseSelected: number | null = $state(null);
-    let courseworkSelected: number | null = $state(null);
+    let courseSelected: ClassroomCourse | null = $state(null);
+    let courseworkSelected: any | null = $state(null);
 
     let appState: string = $state("initial");
 
@@ -33,12 +33,12 @@
                     <CourseWorkSelection bind:tokenResponse bind:courseSelected bind:courseworkSelected/>
 
                     {#if courseworkSelected}
-                        <p class="my-4">You have selected coursework {courseworkSelected} under course {courseSelected}. Proceeding will take you to the grading dashboard. If you wish to return here, reload the page.</p>
+                        <p class="my-4">You have selected coursework {courseworkSelected.title} under course {courseSelected.name}. Proceeding will take you to the grading dashboard. If you wish to return here, reload the page.</p>
                         <button type="button" class="btn preset-filled-primary-500" onclick={proceedToDashboard}>Go to dashboard</button>
                     {/if}
                 {/if}
             {:else if appState === "dashboard"}
-                <Dashboard/>
+                <Dashboard bind:tokenResponse bind:courseSelected bind:courseworkSelected/>
             {/if}
         {/if}
     </div>

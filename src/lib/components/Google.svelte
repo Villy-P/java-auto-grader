@@ -17,7 +17,8 @@
             client_id: '315808916557-l71t37pku56pahaumffp45o11h1u145f.apps.googleusercontent.com',
             scope: [
                 'https://www.googleapis.com/auth/classroom.courses.readonly',
-                'https://www.googleapis.com/auth/classroom.coursework.students.readonly'
+                'https://www.googleapis.com/auth/classroom.coursework.students.readonly',
+                'https://www.googleapis.com/auth/classroom.rosters.readonly'
             ].join(' '),
             callback: (token: any) => {
                 tokenResponse = token;
