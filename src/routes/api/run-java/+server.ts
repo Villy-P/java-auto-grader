@@ -10,16 +10,20 @@ const OUT_DIR = path.join(path.dirname(fileURLToPath(import.meta.url)).split("/"
 
 export async function POST({ request }) {
     const { code, fileName } = await request.json();
-    const filePath = `${OUT_DIR}/${fileName}`;
+    const filePath = `${OUT_DIR}/${path.parse(fileName).name}/${fileName}`;
 
     await promises.mkdir(OUT_DIR, { recursive: true });
+    await promises.mkdir(`${OUT_DIR}/${path.parse(fileName).name}`, { recursive: true });
+
+    const files = await promises.readdir(OUT_DIR);
+    for (const file of files)
+        if (file.endsWith('.txt'))
+            await promises.copyFile(path.join(OUT_DIR, file), path.join(OUT_DIR, path.parse(fileName).name, file));
 
     await promises.writeFile(filePath, code, 'utf-8');
 
-    console.log(`Compiling and running Java file: ${fileName}`);
-
     try {
-        await exec(`javac "${filePath}/${filePath}"`);
+        await exec(`javac "${filePath}"`);
     } catch (err: any) {
         const stderr = err?.stderr || err?.message || String(err);
         console.log(`Compilation error for ${fileName}:\n${stderr}`);
@@ -28,7 +32,7 @@ export async function POST({ request }) {
 
     try {
         const className = path.parse(fileName).name;
-        const { stdout } = await exec(`java -cp . ${className}/${filePath}`, { cwd: OUT_DIR });
+        const { stdout } = await exec(`java -cp . ${className}`, { cwd: `${OUT_DIR}/${className}` });
         console.log(`Execution output for ${fileName}:\n${stdout}`);
         return new Response(`Program output:\n${stdout}`);
     } catch (err: any) {
