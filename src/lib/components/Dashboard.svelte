@@ -7,7 +7,7 @@
         courseworkSelected: gapi.client.classroom.CourseWork | null
     } = $props();
 
-    let users: Student[] = [];
+    let users: Student[] = $state([]);
     
     async function getStudentSubmissions() {
         if (!tokenResponse || !tokenResponse.access_token || !courseSelected || !courseworkSelected)
@@ -40,6 +40,8 @@
                 const fileId: any = javaSubmissions[i].attachments[0].driveFile.id;
                 const downloadUrl = javaSubmissions[i].attachments[0].driveFile.alternateLink + `&alt=media`;
 
+                console.log(fileId, downloadUrl);
+
                 const res = await fetch('/api/download-java/' + fileId);
                 const fileJson = await res.json();
                 javaContent = fileJson?.content ?? (typeof fileJson === 'string' ? fileJson : JSON.stringify(fileJson));
@@ -47,9 +49,9 @@
 
             const student = new Student(studentSubmissions[i].userId, profile, javaContent || "");
             users.push(student);
+            console.log($state.snapshot(users));
         });
 
-        console.log(users);
 
         return result;
     }
@@ -71,7 +73,7 @@
 
     let classroomStudentSubmissions = $derived(getStudentSubmissions());
 
-    let selectedStudent: string | undefined = $state(undefined);
+    let selectedStudent: Student | undefined = $state(undefined);
 </script>
 
 <div class="w-full h-screen flex">
@@ -81,7 +83,7 @@
         {:then studentSubmissions} 
             {#if studentSubmissions && studentSubmissions.studentSubmissions && studentSubmissions.studentSubmissions.length > 0}
                 {#each users as user}
-                    <button class:bg-gray-900={selectedStudent === user.id} class="border-b p-2 cursor-pointer w-full text-left" onclick={() => selectedStudent = user.id}>
+                    <button class:bg-gray-900={selectedStudent === user} class="border-b p-2 cursor-pointer w-full text-left" onclick={() => selectedStudent = user}>
                         <p class="font-bold">{user.data.name?.fullName}</p>
                         <p class="text-sm">{user.data.emailAddress}</p>
                     </button>
@@ -91,5 +93,5 @@
             {/if}
         {/await}
     </div>
-    <div class="w-2/3"></div>
+    <div class="w-2/3">{selectedStudent?.javaContent}</div>
 </div>
