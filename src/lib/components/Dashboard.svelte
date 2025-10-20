@@ -2,6 +2,7 @@
 	import { Student, SubmissionStatus } from "$lib/scripts/user";
 	import { onMount } from "svelte";
 	import SubmissionStatusIcon from "./SubmissionStatusIcon.svelte";
+	import TestCases from "./TestCases.svelte";
 
     let { tokenResponse = $bindable(), courseSelected = $bindable(), courseworkSelected = $bindable() }: {
         tokenResponse: any,
@@ -131,7 +132,7 @@
             {/if}
         </div>
         <div class="w-full flex items-center justify-center space-x-2 p-2 border-t">
-            <button type="button" class="btn preset-tonal-primary w-11/12">Testcases</button>
+            <TestCases/>
             <button type="button" class="btn preset-tonal-primary w-11/12">Run all Java Files</button>
         </div>
     </div>
