@@ -109,25 +109,31 @@
     });
 </script>
 
-<div class="w-full h-screen flex">
-    <div class="w-1/3 max-h-screen overflow-y-auto border-r">
-        {#if classroomStudentSubmissions === null}
-            <p class="flex items-center justify-center w-full h-full">Loading student submissions...</p>
-        {:else}
-            {#if classroomStudentSubmissions.studentSubmissions && classroomStudentSubmissions.studentSubmissions.length > 0}
-                {#each users as user}
-                    <button class:bg-gray-900={selectedStudent === user} class="border-b p-2 cursor-pointer w-full text-left flex items-center" onclick={() => selectedStudent = user}>
-                        <div class="flex flex-col">
-                            <p class="font-bold">{user.data.name?.fullName}</p>
-                            <p class="text-sm">{user.data.emailAddress}</p>
-                        </div>
-                        <SubmissionStatusIcon submissionStatus={user.submissionStatus}/>
-                    </button>
-                {/each}
+<div class="w-full h-screen flex overflow-hidden">
+    <div class="w-1/3 min-h-0 h-full border-r flex flex-col">
+        <div class="grow overflow-y-auto">
+            {#if classroomStudentSubmissions === null}
+                <p class="flex items-center justify-center w-full h-full">Loading student submissions...</p>
             {:else}
-                <p>Couldn't find any submissions.</p>
+                {#if classroomStudentSubmissions.studentSubmissions && classroomStudentSubmissions.studentSubmissions.length > 0}
+                    {#each users as user}
+                        <button class:bg-gray-900={selectedStudent === user} class="border-b p-2 cursor-pointer w-full text-left flex items-center" onclick={() => selectedStudent = user}>
+                            <div class="flex flex-col">
+                                <p class="font-bold">{user.data.name?.fullName}</p>
+                                <p class="text-sm">{user.data.emailAddress}</p>
+                            </div>
+                            <SubmissionStatusIcon submissionStatus={user.submissionStatus}/>
+                        </button>
+                    {/each}
+                {:else}
+                    <p>Couldn't find any submissions.</p>
+                {/if}
             {/if}
-        {/if}
+        </div>
+        <div class="w-full flex items-center justify-center space-x-2 p-2 border-t">
+            <button type="button" class="btn preset-tonal-primary w-11/12">Testcases</button>
+            <button type="button" class="btn preset-tonal-primary w-11/12">Run all Java Files</button>
+        </div>
     </div>
     <div class="w-2/3 h-full relative">
         <div
