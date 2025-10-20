@@ -47,10 +47,13 @@
         users = await Promise.all(
             studentSubmissions.map(async (sub: any, index: number) => {
                 let javaContent = '';
+                let javaFileName: string | null = null;
                 if (sub.assignmentSubmission && sub.assignmentSubmission.attachments) {
                     for (const attachment of sub.assignmentSubmission.attachments) {
                         if (attachment.driveFile) {
                             const fileContent = await downloadFile(attachment.driveFile.id);
+                            if (attachment.driveFile.title.endsWith('.java'))
+                                javaFileName = attachment.driveFile.title;
                             javaContent += `// File: ${attachment.driveFile.title}\n${fileContent}\n\n`;
                         }
                     }
@@ -58,6 +61,7 @@
                 return {
                     id: sub.userId,
                     data: profiles[index],
+                    javaFileName,
                     javaContent: javaContent.trim(),
                     submissionStatus: javaContent === "" ? SubmissionStatus.NOT_SUBMITTED : SubmissionStatus.UNKNOWN
                 } as Student;
@@ -99,6 +103,30 @@
         return result;
     }
 
+    async function runAllJavaFiles() {
+        const java = await Promise.all(
+            users.map(async (user) => {
+                if (user.javaContent && user.javaContent !== '') {
+                    const response = await fetch('/api/run-java', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            code: user.javaContent,
+                            fileName: user.javaFileName || 'Main.java'
+                        })
+                    });
+                    const result = await response.json();
+                    console.log('Java execution result for', user.data.name?.fullName, ':', result);
+                    return { user, result };
+                } else {
+                    return { user, result: null };
+                }
+            })
+        );
+    }
+
     let classroomStudentSubmissions = $state<any>(null);
 
     let selectedStudent: Student | undefined = $state(undefined);
@@ -133,7 +161,7 @@
         </div>
         <div class="w-full flex items-center justify-center space-x-2 p-2 border-t">
             <TestCases/>
-            <button type="button" class="btn preset-tonal-primary w-11/12">Run all Java Files</button>
+            <button type="button" class="btn preset-tonal-primary w-11/12" onclick={runAllJavaFiles}>Run all Java Files</button>
         </div>
     </div>
     <div class="w-2/3 h-full relative">

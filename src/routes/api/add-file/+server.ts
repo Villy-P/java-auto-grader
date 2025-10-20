@@ -2,7 +2,7 @@ import path from 'path';
 import {promises} from 'fs';
 import { fileURLToPath } from 'url';
 
-const OUT_DIR = path.join(path.dirname(fileURLToPath(import.meta.url)), 'out');
+const OUT_DIR = path.join(path.dirname(fileURLToPath(import.meta.url)).split("/").slice(0, -1).join("/"), 'out');
 
 export async function POST({ request }) {
     const { code, fileName } = await request.json();
