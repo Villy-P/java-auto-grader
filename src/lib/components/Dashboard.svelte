@@ -113,6 +113,8 @@
         {/await}
     </div>
     <div class="w-2/3">
-        <textarea class="bg-[#121212] text-area w-full h-full p-4 font-mono" readonly>{selectedStudent?.javaContent}</textarea>
+        <label class="label h-full">
+            <textarea class="bg-[#121212] text-area w-full h-full p-4 font-mono" readonly>{selectedStudent?.javaContent}</textarea>
+        </label>
     </div>
 </div>
