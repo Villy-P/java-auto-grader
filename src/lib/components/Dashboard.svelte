@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { Student } from "$lib/scripts/user";
+	import { onMount } from "svelte";
 
     let { tokenResponse = $bindable(), courseSelected = $bindable(), courseworkSelected = $bindable() }: {
         tokenResponse: any,
@@ -8,6 +9,10 @@
     } = $props();
 
     let users: Student[] = $state([]);
+
+    onMount(async () => {
+        classroomStudentSubmissions = await getStudentSubmissions();
+    });
     
     async function getStudentSubmissions() {
         if (!tokenResponse || !tokenResponse.access_token || !courseSelected || !courseworkSelected)
@@ -41,10 +46,7 @@
                 const downloadUrl = javaSubmissions[i].attachments[0].driveFile.alternateLink + `&alt=media`;
 
                 console.log(fileId, downloadUrl);
-
-                const res = await fetch('/api/download-java/' + fileId);
-                const fileJson = await res.json();
-                javaContent = fileJson?.content ?? (typeof fileJson === 'string' ? fileJson : JSON.stringify(fileJson));
+                javaContent = await downloadFile(fileId);
             }
 
             const student = new Student(studentSubmissions[i].userId, profile, javaContent || "");
@@ -54,6 +56,23 @@
 
 
         return result;
+    }
+
+    async function downloadFile(fileId: string) {
+        const token = document.cookie.split('=')[1];
+        tokenResponse = { access_token: token };
+        const res = await fetch(`https://www.googleapis.com/drive/v3/files/${fileId}?alt=media`, {
+        headers: {
+            Authorization: `Bearer ${tokenResponse.access_token}`
+        }
+        });
+
+        if (!res.ok) {
+        throw new Error('Failed to download file');
+        }
+
+        const text = await res.text();
+        return text;
     }
 
     async function getStudentProfile(userId: string) {
@@ -71,7 +90,7 @@
         return result;
     }
 
-    let classroomStudentSubmissions = $derived(getStudentSubmissions());
+    let classroomStudentSubmissions = $state<any>(null);
 
     let selectedStudent: Student | undefined = $state(undefined);
 </script>
