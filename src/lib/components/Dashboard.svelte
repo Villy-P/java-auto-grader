@@ -10,8 +10,21 @@
 
     let users: Student[] = $state([]);
 
+    let monacoEditor: any = null;
+    let monaco: any = null;
+
     onMount(async () => {
         classroomStudentSubmissions = await getStudentSubmissions();
+
+        monaco = await import('monaco-editor');
+        const editorContainer = document.getElementById('editor');
+        if (editorContainer) {
+            monacoEditor = monaco.editor.create(editorContainer, {
+                value: selectedStudent ? selectedStudent.javaContent : '',
+                language: 'java',
+                theme: 'vs-dark'
+            });
+        }
     });
     
     async function getStudentSubmissions() {
@@ -47,7 +60,6 @@
                 } as Student;
             })
         );
-
 
         return result;
     }
@@ -87,6 +99,12 @@
     let classroomStudentSubmissions = $state<any>(null);
 
     let selectedStudent: Student | undefined = $state(undefined);
+
+    $effect(() => {
+        if (monacoEditor && selectedStudent)
+            monacoEditor.setValue(selectedStudent.javaContent);
+        console.log('Selected student changed:', selectedStudent, monacoEditor);
+    });
 </script>
 
 <div class="w-full h-screen flex">
@@ -107,8 +125,6 @@
         {/await}
     </div>
     <div class="w-2/3">
-        <label class="label h-full">
-            <textarea class="bg-[#121212] text-area w-full h-full p-4 font-mono" readonly>{selectedStudent?.javaContent}</textarea>
-        </label>
+        <div id="editor" class="h-full w-full"></div>
     </div>
 </div>
