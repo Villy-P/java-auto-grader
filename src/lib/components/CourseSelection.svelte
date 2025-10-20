@@ -17,7 +17,7 @@
         return result;
     }
 
-    let classroomCourses: Promise<{courses: ClassroomCourse[]}> = $derived(getCourses());
+    let classroomCourses: Promise<{courses: gapi.client.classroom.Course[]}> = $derived(getCourses());
 </script>
 
 {#await classroomCourses}
