@@ -1,6 +1,7 @@
 <script lang="ts">
-	import { Student } from "$lib/scripts/user";
+	import { Student, SubmissionStatus } from "$lib/scripts/user";
 	import { onMount } from "svelte";
+	import SubmissionStatusIcon from "./SubmissionStatusIcon.svelte";
 
     let { tokenResponse = $bindable(), courseSelected = $bindable(), courseworkSelected = $bindable() }: {
         tokenResponse: any,
@@ -56,7 +57,8 @@
                 return {
                     id: sub.userId,
                     data: profiles[index],
-                    javaContent: javaContent.trim()
+                    javaContent: javaContent.trim(),
+                    submissionStatus: javaContent === "" ? SubmissionStatus.NOT_SUBMITTED : SubmissionStatus.UNKNOWN
                 } as Student;
             })
         );
@@ -114,9 +116,12 @@
         {:else}
             {#if classroomStudentSubmissions.studentSubmissions && classroomStudentSubmissions.studentSubmissions.length > 0}
                 {#each users as user}
-                    <button class:bg-gray-900={selectedStudent === user} class="border-b p-2 cursor-pointer w-full text-left" onclick={() => selectedStudent = user}>
-                        <p class="font-bold">{user.data.name?.fullName}</p>
-                        <p class="text-sm">{user.data.emailAddress}</p>
+                    <button class:bg-gray-900={selectedStudent === user} class="border-b p-2 cursor-pointer w-full text-left flex items-center" onclick={() => selectedStudent = user}>
+                        <div class="flex flex-col">
+                            <p class="font-bold">{user.data.name?.fullName}</p>
+                            <p class="text-sm">{user.data.emailAddress}</p>
+                        </div>
+                        <SubmissionStatusIcon submissionStatus={user.submissionStatus}/>
                     </button>
                 {/each}
             {:else}
@@ -125,6 +130,13 @@
         {/if}
     </div>
     <div class="w-2/3">
-        <div id="editor" class="h-full w-full"></div>
+        <div class:hidden={selectedStudent === undefined || selectedStudent.javaContent === ''} id="editor" class="h-full w-full"></div>
+        <div class:hidden={selectedStudent !== undefined && selectedStudent.javaContent !== ''} class="h-full w-full flex items-center justify-around">
+            {#if selectedStudent === undefined}
+                <p>Please select a student submission to view the code.</p>
+            {:else}
+                <p>The selected student has not submitted any Java files.</p>
+            {/if}
+        </div>
     </div>
 </div>
