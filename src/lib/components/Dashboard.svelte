@@ -29,42 +29,36 @@
             studentSubmissions.map((sub: any) => getStudentProfile(sub.userId))
         );
 
-        profiles.forEach(async (profile, i) => {
-            const javaSubmissions = studentSubmissions
-                .map((sub: any) => ({
-                    userId: sub.userId,
-                    attachments: sub.assignmentSubmission?.attachments?.filter((att: any) => 
-                    att.driveFile?.title.endsWith('.java')
-                    )
-                }))
-                .filter((sub: any) => sub.attachments && sub.attachments.length > 0);
-
-            let javaContent: string | null = null;
-
-            if (javaSubmissions[i] && javaSubmissions[i].attachments && javaSubmissions[i].attachments.length > 0) {
-                const fileId: any = javaSubmissions[i].attachments[0].driveFile.id;
-                const downloadUrl = javaSubmissions[i].attachments[0].driveFile.alternateLink + `&alt=media`;
-
-                console.log(fileId, downloadUrl);
-                javaContent = await downloadFile(fileId);
-            }
-
-            const student = new Student(studentSubmissions[i].userId, profile, javaContent || "");
-            users.push(student);
-            console.log($state.snapshot(users));
-        });
+        users = await Promise.all(
+            studentSubmissions.map(async (sub: any, index: number) => {
+                let javaContent = '';
+                if (sub.assignmentSubmission && sub.assignmentSubmission.attachments) {
+                    for (const attachment of sub.assignmentSubmission.attachments) {
+                        if (attachment.driveFile) {
+                            const fileContent = await downloadFile(attachment.driveFile.id);
+                            javaContent += `// File: ${attachment.driveFile.title}\n${fileContent}\n\n`;
+                        }
+                    }
+                }
+                return {
+                    id: sub.userId,
+                    data: profiles[index],
+                    javaContent: javaContent.trim()
+                } as Student;
+            })
+        );
 
 
         return result;
     }
 
     async function downloadFile(fileId: string) {
-        const token = document.cookie.split('=')[1];
+        const token = document.cookie.split('; ').find(row => row.startsWith('g_token='))?.split('=')[1];
         tokenResponse = { access_token: token };
         const res = await fetch(`https://www.googleapis.com/drive/v3/files/${fileId}?alt=media`, {
-        headers: {
-            Authorization: `Bearer ${tokenResponse.access_token}`
-        }
+            headers: {
+                Authorization: `Bearer ${tokenResponse.access_token}`
+            }
         });
 
         if (!res.ok) {
