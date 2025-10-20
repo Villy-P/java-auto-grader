@@ -103,16 +103,16 @@
     $effect(() => {
         if (monacoEditor && selectedStudent)
             monacoEditor.setValue(selectedStudent.javaContent);
-        console.log('Selected student changed:', selectedStudent, monacoEditor);
+        console.log('Selected student changed:', selectedStudent);
     });
 </script>
 
 <div class="w-full h-screen flex">
     <div class="w-1/3 max-h-screen overflow-y-auto border-r">
-        {#await classroomStudentSubmissions}
-            <p>Loading your submissions...</p>
-        {:then studentSubmissions} 
-            {#if studentSubmissions && studentSubmissions.studentSubmissions && studentSubmissions.studentSubmissions.length > 0}
+        {#if classroomStudentSubmissions === null}
+            <p class="flex items-center justify-center w-full h-full">Loading student submissions...</p>
+        {:else}
+            {#if classroomStudentSubmissions.studentSubmissions && classroomStudentSubmissions.studentSubmissions.length > 0}
                 {#each users as user}
                     <button class:bg-gray-900={selectedStudent === user} class="border-b p-2 cursor-pointer w-full text-left" onclick={() => selectedStudent = user}>
                         <p class="font-bold">{user.data.name?.fullName}</p>
@@ -122,7 +122,7 @@
             {:else}
                 <p>Couldn't find any submissions.</p>
             {/if}
-        {/await}
+        {/if}
     </div>
     <div class="w-2/3">
         <div id="editor" class="h-full w-full"></div>
