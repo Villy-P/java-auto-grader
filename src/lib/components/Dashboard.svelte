@@ -129,14 +129,33 @@
             {/if}
         {/if}
     </div>
-    <div class="w-2/3">
-        <div class:hidden={selectedStudent === undefined || selectedStudent.javaContent === ''} id="editor" class="h-full w-full"></div>
-        <div class:hidden={selectedStudent !== undefined && selectedStudent.javaContent !== ''} class="h-full w-full flex items-center justify-around">
-            {#if selectedStudent === undefined}
-                <p>Please select a student submission to view the code.</p>
-            {:else}
-                <p>The selected student has not submitted any Java files.</p>
-            {/if}
-        </div>
+    <div class="w-2/3 h-full relative">
+        <div
+            id="editor"
+            class="h-full w-full"
+            class:hidden-editor={selectedStudent == null || selectedStudent.javaContent == ''}
+        ></div>
+
+        {#if selectedStudent == null}
+            <div class="h-full w-full flex items-center justify-around">
+            <p>Please select a student submission to view the code.</p>
+            </div>
+        {:else if selectedStudent.javaContent == ''}
+            <div class="h-full w-full flex items-center justify-around">
+            <p>The selected student has not submitted any Java files.</p>
+            </div>
+        {/if}
     </div>
 </div>
+
+<style>
+    .hidden-editor {
+        visibility: hidden;
+        pointer-events: none;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+</style>
