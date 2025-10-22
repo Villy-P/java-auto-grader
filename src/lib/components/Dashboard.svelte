@@ -24,7 +24,10 @@
             monacoEditor = monaco.editor.create(editorContainer, {
                 value: selectedStudent ? selectedStudent.javaContent : '',
                 language: 'java',
-                theme: 'vs-dark'
+                theme: 'vs-dark',
+                minimap: { enabled: false },
+                scrollBeyondLastLine: false,
+                automaticLayout: true
             });
         }
     });
@@ -164,22 +167,26 @@
             <button type="button" class="btn preset-tonal-primary w-11/12" onclick={runAllJavaFiles}>Run all Java Files</button>
         </div>
     </div>
-    <div class="w-2/3 h-full relative">
+    <div class="w-2/3 h-full flex flex-col relative">
         <div
             id="editor"
-            class="h-full w-full"
+            class="h-2/3 w-full overflow-hidden"
             class:hidden-editor={selectedStudent == null || selectedStudent.javaContent == ''}
         ></div>
 
         {#if selectedStudent == null}
-            <div class="h-full w-full flex items-center justify-around">
-            <p>Please select a student submission to view the code.</p>
+            <div class="h-2/3 w-full flex items-center justify-around">
+                <p>Please select a student submission to view the code.</p>
             </div>
         {:else if selectedStudent.javaContent == ''}
-            <div class="h-full w-full flex items-center justify-around">
-            <p>The selected student has not submitted any Java files.</p>
+            <div class="h-2/3 w-full flex items-center justify-around">
+                <p>The selected student has not submitted any Java files.</p>
             </div>
         {/if}
+
+        <div class="h-1/3 w-full border-t">
+
+        </div>
     </div>
 </div>
 
