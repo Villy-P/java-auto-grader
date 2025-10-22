@@ -15,6 +15,10 @@
     let monacoEditor: any = null;
     let monaco: any = null;
 
+    let fileName: string = $state('');
+    let fileContent: string = $state('');
+    let expectedOutput: string = $state('');
+
     onMount(async () => {
         classroomStudentSubmissions = await getStudentSubmissions();
 
@@ -120,14 +124,29 @@
                             fileName: user.javaFileName || 'Main.java'
                         })
                     });
-                    const result = await response.json();
-                    console.log('Java execution result for', user.data.name?.fullName, ':', result);
+                    const result = await response.text();
+                    user.javaResponse = result;
+                    user.submissionStatus = getSubmissionStatus(result);
                     return { user, result };
                 } else {
                     return { user, result: null };
                 }
             })
         );
+    }
+
+    function getSubmissionStatus(output: string) {
+        console.log(output.replace("Program output:", "").trim(), expectedOutput.trim())
+        if (output.replace("Program output:", "").replaceAll(/\s/g, "").trim() != expectedOutput.replaceAll(/\s/g, "").trim())
+            return SubmissionStatus.WRONG_OUTPUT;
+        else if (output.startsWith('Compilation error'))
+            return SubmissionStatus.COMPILE_ERROR;
+        else if (output.startsWith('Runtime error'))
+            return SubmissionStatus.RUNTIME_ERROR;
+        else if (output.startsWith('Program output'))
+            return SubmissionStatus.SUCCESS;
+        else
+            return SubmissionStatus.UNKNOWN;
     }
 
     let classroomStudentSubmissions = $state<any>(null);
@@ -163,7 +182,7 @@
             {/if}
         </div>
         <div class="w-full flex items-center justify-center space-x-2 p-2 border-t">
-            <TestCases/>
+            <TestCases bind:fileName={fileName} bind:fileContent={fileContent} bind:expectedOutput={expectedOutput}/>
             <button type="button" class="btn preset-tonal-primary w-11/12" onclick={runAllJavaFiles}>Run all Java Files</button>
         </div>
     </div>
@@ -185,7 +204,12 @@
         {/if}
 
         <div class="h-1/3 w-full border-t">
-
+            {#if selectedStudent && selectedStudent.javaResponse}
+                <div class="p-4 h-full overflow-y-auto">
+                    <h2 class="text-2xl mb-2">Output for {selectedStudent.data.name?.fullName}:</h2>
+                    <pre class="bg-gray-800 text-white p-4 rounded whitespace-pre-wrap">{selectedStudent.javaResponse}</pre>
+                </div>
+            {/if}
         </div>
     </div>
 </div>

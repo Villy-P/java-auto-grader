@@ -26,18 +26,16 @@ export async function POST({ request }) {
         await exec(`javac "${filePath}"`);
     } catch (err: any) {
         const stderr = err?.stderr || err?.message || String(err);
-        console.log(`Compilation error for ${fileName}:\n${stderr}`);
         return new Response(`Compilation error: ${stderr}`, { status: 500 });
     }
 
     try {
+        console.log("OUTPUT DONE");
         const className = path.parse(fileName).name;
         const { stdout } = await exec(`java -cp . ${className}`, { cwd: `${OUT_DIR}/${className}` });
-        console.log(`Execution output for ${fileName}:\n${stdout}`);
         return new Response(`Program output:\n${stdout}`);
     } catch (err: any) {
         const stderr = err?.stderr || err?.message || String(err);
-        console.log(`Runtime error for ${fileName}:\n${stderr}`);
         return new Response(`Runtime error: ${stderr}`, { status: 500 });
     }
 }

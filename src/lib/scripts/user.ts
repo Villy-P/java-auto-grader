@@ -1,6 +1,7 @@
 export enum SubmissionStatus {
     NOT_SUBMITTED = "NOT_SUBMITTED",
-    RETURNED_ERROR = "RETURNED_ERROR",
+    COMPILE_ERROR = "COMPILE_ERROR",
+    RUNTIME_ERROR = "RUNTIME_ERROR",
     WRONG_OUTPUT = "WRONG_OUTPUT",
     SUCCESS = "SUCCESS",
     UNKNOWN = "UNKNOWN"
@@ -11,6 +12,7 @@ export class Student {
     data: gapi.client.classroom.UserProfile;
     javaFileName: string | null;
     javaContent: string | null;
+    javaResponse: string | null = null;
     submissionStatus: SubmissionStatus;
 
     constructor(id: string, data: gapi.client.classroom.UserProfile, javaFileName: string | null = null, javaContent: string | null = null, submissionStatus: SubmissionStatus = SubmissionStatus.NOT_SUBMITTED) {

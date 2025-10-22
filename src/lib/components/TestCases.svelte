@@ -1,9 +1,7 @@
 <script lang="ts">
     import { Dialog, Portal } from '@skeletonlabs/skeleton-svelte';
 
-    let fileName: string = '';
-    let fileContent: string = '';
-    let expectedOutput: string = '';
+    let { fileName = $bindable(), fileContent = $bindable(), expectedOutput = $bindable() } = $props();
 
     async function updateTestCases() {
         const res = await fetch('/api/add-file', {
