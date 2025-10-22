@@ -1,9 +1,11 @@
 <script lang="ts">
     import { Dialog, Portal } from '@skeletonlabs/skeleton-svelte';
+    import { onMount } from 'svelte';
 
     let { fileName = $bindable(), fileContent = $bindable(), expectedOutput = $bindable() } = $props();
 
     async function updateTestCases() {
+        onTestCaseChange();
         const res = await fetch('/api/add-file', {
             method: 'POST',
             headers: {
@@ -15,6 +17,32 @@
             })
         });
     }
+
+    function onTestCaseChange() {
+        const testCase = {
+            fileName,
+            fileContent,
+            expectedOutput
+        };
+        localStorage.setItem('testCase', JSON.stringify(testCase));
+    }
+
+    function deleteTestCases() {
+        fileName = '';
+        fileContent = '';
+        expectedOutput = '';
+        localStorage.removeItem('testCase');
+    }
+
+    onMount(() => {
+        const savedTestCase = localStorage.getItem('testCase');
+        if (savedTestCase) {
+            const testCase = JSON.parse(savedTestCase);
+            fileName = testCase.fileName;
+            fileContent = testCase.fileContent;
+            expectedOutput = testCase.expectedOutput;
+        }
+    })
 </script>
 
 <Dialog>
@@ -26,7 +54,7 @@
                 <Dialog.Title class="text-2xl font-bold">Test Cases</Dialog.Title>
                 <label class="label">
                     <span class="label-text">File Name</span>
-                    <input class="input" type="text" placeholder="e.x. test.txt" bind:value={fileName} />
+                    <input class="input" type="text" placeholder="e.x. test.txt" bind:value={fileName}/>
                 </label>
                 <label class="label">
                     <span class="label-text">File Content</span>
@@ -37,6 +65,7 @@
                     <textarea class="textarea" rows="4" bind:value={expectedOutput}></textarea>
                 </label>
                 <Dialog.CloseTrigger class="btn preset-tonal" onclick={updateTestCases}>Update Testcases</Dialog.CloseTrigger>
+                <Dialog.CloseTrigger class="btn preset-tonal" onclick={deleteTestCases}>Delete Testcases</Dialog.CloseTrigger>
             </Dialog.Content>
         </Dialog.Positioner>
     </Portal>
