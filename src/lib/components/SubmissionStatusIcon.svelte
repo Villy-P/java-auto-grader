@@ -8,7 +8,7 @@
 
 <div class="flex items-center justify-center ml-auto mr-3 h-5 w-5">
     {#if submissionStatus === SubmissionStatus.NOT_SUBMITTED}
-        <span class="text-yellow-500">⏳</span>
+        <span class="text-yellow-500">❔</span>
     {:else if submissionStatus === SubmissionStatus.RUNTIME_ERROR || submissionStatus === SubmissionStatus.COMPILE_ERROR}
         <span class="text-red-500">❌</span>
     {:else if submissionStatus === SubmissionStatus.WRONG_OUTPUT}

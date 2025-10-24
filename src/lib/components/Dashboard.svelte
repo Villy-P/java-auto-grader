@@ -111,6 +111,12 @@
     }
 
     async function runAllJavaFiles() {
+        users.forEach(user => {
+            user.submissionStatus = 
+                user.submissionStatus == SubmissionStatus.NOT_SUBMITTED ? 
+                user.submissionStatus : 
+                SubmissionStatus.UNKNOWN;
+        });
         const java = await Promise.all(
             users.map(async (user) => {
                 if (user.javaContent && user.javaContent !== '') {
@@ -158,6 +164,40 @@
             monacoEditor.setValue(selectedStudent.javaContent);
         console.log('Selected student changed:', selectedStudent);
     });
+
+    function getResultText(user: Student) {
+        switch (user.submissionStatus) {
+            case SubmissionStatus.NOT_SUBMITTED:
+                return "Not Submitted";
+            case SubmissionStatus.COMPILE_ERROR:
+                return "Compilation Error";
+            case SubmissionStatus.RUNTIME_ERROR:
+                return "Runtime Error";
+            case SubmissionStatus.WRONG_OUTPUT:
+                return "Wrong Output";
+            case SubmissionStatus.SUCCESS:
+                return "Success";
+            default:
+                return "Unknown";
+        }
+    }
+
+    function getResultColor(user: Student) {
+        switch (user.submissionStatus) {
+            case SubmissionStatus.NOT_SUBMITTED:
+                return "text-yellow-500";
+            case SubmissionStatus.COMPILE_ERROR:
+                return "text-red-500";
+            case SubmissionStatus.RUNTIME_ERROR:
+                return "text-red-500";
+            case SubmissionStatus.WRONG_OUTPUT:
+                return "text-orange-500";
+            case SubmissionStatus.SUCCESS:
+                return "text-green-500";
+            default:
+                return "text-gray-500";
+        }
+    }
 </script>
 
 <div class="w-full h-screen flex overflow-hidden">
@@ -207,7 +247,17 @@
             {#if selectedStudent && selectedStudent.javaResponse}
                 <div class="p-4 h-full overflow-y-auto">
                     <h2 class="text-2xl mb-2">Output for {selectedStudent.data.name?.fullName}:</h2>
+                    <p class={getResultColor(selectedStudent)}>{getResultText(selectedStudent)}</p>
                     <pre class="bg-gray-800 text-white p-4 rounded whitespace-pre-wrap">{selectedStudent.javaResponse}</pre>
+                    {#if getResultText(selectedStudent) !== "Success"}
+                        <h3 class="text-xl mt-4 mb-2">Expected Output:</h3>
+                        <pre class="bg-gray-800 text-white p-4 rounded whitespace-pre-wrap">{expectedOutput}</pre>
+                    {/if}
+                    <h3 class="text-xl mt-4 mb-2">Override Result:</h3>
+                    <div class="flex gap-4">
+                        <button onclick={() => selectedStudent!.submissionStatus = SubmissionStatus.SUCCESS} type="button" class="btn preset-filled-success-500">Should be correct</button>
+                        <button onclick={() => selectedStudent!.submissionStatus = SubmissionStatus.WRONG_OUTPUT} type="button" class="btn preset-filled-error-500">Should be incorrect</button>
+                    </div>
                 </div>
             {/if}
         </div>
