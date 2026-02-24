@@ -220,25 +220,25 @@
         </div>
     </div>
     <div class="w-2/3 h-full flex flex-col relative">
-        <div class="h-full w-full overflow-hidden flex flex-col" class:hidden-editor={selectedStudent == null || selectedStudent.javaContent == ''}>
+        <div class="h-full w-full overflow-hidden flex flex-col">
             <div class="w-full flex p-4 border-b z-50 gap-4">
                 <ButtonToolbar bind:selectedStudent={selectedStudent} {expectedOutput}/>
             </div>
+            {#if selectedStudent == null}
+                <div class="flex-grow w-full flex items-center justify-around">
+                    <p>Please select a student submission to view the code.</p>
+                </div>
+            {:else if selectedStudent.javaContent == ''}
+                <div class="flex-grow w-full flex items-center justify-around">
+                    <p>The selected student has not submitted any Java files.</p>
+                </div>
+            {/if}
             <div
                 id="editor"
                 class="flex-grow w-full overflow-hidden relative"
+                class:hidden-editor={selectedStudent == null || selectedStudent.javaContent == ''}
             ></div>
         </div>
-
-        {#if selectedStudent == null}
-            <div class="h-2/3 w-full flex items-center justify-around">
-                <p>Please select a student submission to view the code.</p>
-            </div>
-        {:else if selectedStudent.javaContent == ''}
-            <div class="h-2/3 w-full flex items-center justify-around">
-                <p>The selected student has not submitted any Java files.</p>
-            </div>
-        {/if}
 
         <div class="h-1/3 w-full border-t">
             {#if selectedStudent && selectedStudent.javaResponse}
