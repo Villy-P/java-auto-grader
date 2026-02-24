@@ -7,7 +7,7 @@
     import Rerun from "./Toolbar/Rerun.svelte";
     import Run from "./Toolbar/Run.svelte";
     import TestcasesBtn from "./Toolbar/TestcasesBtn.svelte";
-	import { getSubmissionStatus } from "$lib/scripts/output";
+	import { getSubmissionStatus, getResultText, getResultColor } from "$lib/scripts/output";
 
     let { tokenResponse = $bindable(), courseSelected = $bindable(), courseworkSelected = $bindable() }: {
         tokenResponse: any,
@@ -159,40 +159,6 @@
     function onChangeStudent() {
         if (monacoEditor && selectedStudent)
             monacoEditor.setValue(selectedStudent.javaContent);
-    }
-
-    function getResultText(user: Student) {
-        switch (user.submissionStatus) {
-            case SubmissionStatus.NOT_SUBMITTED:
-                return "Not Submitted";
-            case SubmissionStatus.COMPILE_ERROR:
-                return "Compilation Error";
-            case SubmissionStatus.RUNTIME_ERROR:
-                return "Runtime Error";
-            case SubmissionStatus.WRONG_OUTPUT:
-                return "Wrong Output";
-            case SubmissionStatus.SUCCESS:
-                return "Success";
-            default:
-                return "Unknown";
-        }
-    }
-
-    function getResultColor(user: Student) {
-        switch (user.submissionStatus) {
-            case SubmissionStatus.NOT_SUBMITTED:
-                return "text-yellow-500";
-            case SubmissionStatus.COMPILE_ERROR:
-                return "text-red-500";
-            case SubmissionStatus.RUNTIME_ERROR:
-                return "text-red-500";
-            case SubmissionStatus.WRONG_OUTPUT:
-                return "text-orange-500";
-            case SubmissionStatus.SUCCESS:
-                return "text-green-500";
-            default:
-                return "text-gray-500";
-        }
     }
 </script>
 
