@@ -11,7 +11,7 @@
     }
 </script>
 
-<button type="button" class="btn-icon preset-filled w-fit" onclick={logout}><LogOut size={18}/></button>
-<Tooltip placement="bottom">Sign out</Tooltip>
-<button type="button" class="btn-icon preset-filled w-fit z-50 ml-auto"><RefreshCCW size={18}/></button>
+<button type="button" class="btn-icon preset-filled w-fit h-fit z-50 ml-auto"><RefreshCCW size={14}/></button>
 <Tooltip placement="bottom">Re-run Student Submission</Tooltip>
+<button type="button" class="btn-icon preset-filled w-fit h-fit" onclick={logout}><LogOut size={14}/></button>
+<Tooltip placement="bottom">Sign out</Tooltip>

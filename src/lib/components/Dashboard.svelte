@@ -3,9 +3,6 @@
 	import { onMount } from "svelte";
 	import SubmissionStatusIcon from "./SubmissionStatusIcon.svelte";
 	import TestCases from "./TestCases.svelte";
-    import RefreshCCW from "@lucide/svelte/icons/refresh-ccw";
-	import Cookies from "./Cookies.svelte";
-	import { Tooltip } from "flowbite-svelte";
 	import ButtonToolbar from "./ButtonToolbar.svelte";
 
     let { tokenResponse = $bindable(), courseSelected = $bindable(), courseworkSelected = $bindable() }: {
