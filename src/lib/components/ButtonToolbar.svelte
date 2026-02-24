@@ -41,7 +41,10 @@
     }
 </script>
 
-<button type="button" class="btn-icon preset-filled w-fit h-fit z-50 ml-auto" onclick={rerunSubmission}><RefreshCCW size={14}/></button>
-<Tooltip placement="bottom">Re-run Student Submission</Tooltip>
+<div class="ml-auto"></div>
+{#if selectedStudent && selectedStudent.javaContent && selectedStudent.javaContent !== ''}
+    <button type="button" class="btn-icon preset-filled w-fit h-fit z-50" onclick={rerunSubmission}><RefreshCCW size={14}/></button>
+    <Tooltip placement="bottom">Re-run Student Submission</Tooltip>
+{/if}
 <button type="button" class="btn-icon preset-filled w-fit h-fit" onclick={logout}><LogOut size={14}/></button>
 <Tooltip placement="bottom">Sign out</Tooltip>
