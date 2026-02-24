@@ -184,8 +184,6 @@
             {/if}
         </div>
         <div class="w-full flex items-center justify-center space-x-2 p-2 border-t">
-            <TestCases bind:fileName={fileName} bind:fileContent={fileContent} bind:expectedOutput={expectedOutput}/>
-            <button type="button" class="btn preset-tonal-primary w-11/12" onclick={runAllJavaFiles}>Run all Java Files</button>
         </div>
     </div>
     <div class="w-2/3 h-full flex flex-col relative">
