@@ -1,5 +1,4 @@
 <script lang="ts">
-	import Cookies from "$lib/components/Cookies.svelte";
 	import CourseSelection from "$lib/components/CourseSelection.svelte";
 	import CourseWorkSelection from "$lib/components/CourseWorkSelection.svelte";
 	import Dashboard from "$lib/components/Dashboard.svelte";
@@ -16,8 +15,6 @@
         appState = "dashboard";
     }
 </script>
-
-<Cookies/>
 
 {#if appState === "initial"}
     <h1 class="text-center text-5xl p-4">Auto Java Grader</h1>
