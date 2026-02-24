@@ -1,6 +1,8 @@
 <script lang="ts">
     import LogOut from "@lucide/svelte/icons/log-out";
     import RefreshCCW from "@lucide/svelte/icons/refresh-ccw";
+    import FlaskConical from "@lucide/svelte/icons/flask-conical";
+    import Play from "@lucide/svelte/icons/play";
     import { Student, SubmissionStatus } from "$lib/scripts/user";
     import { Tooltip } from "flowbite-svelte";
 	import { getSubmissionStatus } from "$lib/scripts/output";
@@ -46,5 +48,9 @@
     <button type="button" class="btn-icon preset-filled w-fit h-fit z-50" onclick={rerunSubmission}><RefreshCCW size={14}/></button>
     <Tooltip placement="bottom">Re-run Student Submission</Tooltip>
 {/if}
+<button type="button" class="btn-icon preset-filled w-fit h-fit" onclick={logout}><FlaskConical size={14}/></button>
+<Tooltip placement="bottom">Edit Testcases</Tooltip>
+<button type="button" class="btn-icon preset-filled w-fit h-fit" onclick={logout}><Play size={14}/></button>
+<Tooltip placement="bottom">Run all Java Files</Tooltip>
 <button type="button" class="btn-icon preset-filled w-fit h-fit" onclick={logout}><LogOut size={14}/></button>
 <Tooltip placement="bottom">Sign out</Tooltip>
