@@ -36,4 +36,5 @@
 {#if selectedStudent && selectedStudent.javaContent && selectedStudent.javaContent !== ''}
     <button type="button" class="btn-icon preset-filled w-fit h-fit z-50" onclick={rerunSubmission}><RefreshCCW size={14}/></button>
     <Tooltip placement="bottom">Re-run Student Submission</Tooltip>
+    <div class="h-full bg-white w-[1px]"></div>
 {/if}

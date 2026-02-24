@@ -224,7 +224,7 @@
     </div>
     <div class="w-2/3 h-full flex flex-col relative">
         <div class="h-full w-full overflow-hidden flex flex-col">
-            <div class="w-full flex p-4 border-b z-50 gap-4">
+            <div class="w-full flex p-3 border-b z-50 gap-2">
                 <div class="ml-auto"></div>
                 <Rerun bind:selectedStudent={selectedStudent} {expectedOutput}/>
                 <Run/>
