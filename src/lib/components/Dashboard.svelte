@@ -227,7 +227,7 @@
             <div class="w-full flex p-3 border-b z-50 gap-2">
                 <div class="ml-auto"></div>
                 <Rerun bind:selectedStudent={selectedStudent} {expectedOutput}/>
-                <Run/>
+                <Run bind:users={users} {expectedOutput}/>
                 <TestcasesBtn/>
                 <Logout bind:selectedStudent={selectedStudent}/>
             </div>
