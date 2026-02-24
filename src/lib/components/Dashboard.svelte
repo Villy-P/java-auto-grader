@@ -2,11 +2,10 @@
 	import { Student, SubmissionStatus } from "$lib/scripts/user";
 	import { onMount } from "svelte";
 	import SubmissionStatusIcon from "./SubmissionStatusIcon.svelte";
-	import TestCases from "./TestCases.svelte";
+	import TestCases from "./Toolbar/Testcases.svelte";
     import Logout from "./Toolbar/Logout.svelte";
     import Rerun from "./Toolbar/Rerun.svelte";
     import Run from "./Toolbar/Run.svelte";
-    import TestcasesBtn from "./Toolbar/TestcasesBtn.svelte";
 	import { getSubmissionStatus, getResultText, getResultColor } from "$lib/scripts/output";
 
     let { tokenResponse = $bindable(), courseSelected = $bindable(), courseworkSelected = $bindable() }: {
@@ -192,7 +191,7 @@
                 <div class="ml-auto"></div>
                 <Rerun bind:selectedStudent={selectedStudent} {expectedOutput}/>
                 <Run bind:users={users} {expectedOutput}/>
-                <TestcasesBtn/>
+                <Testcases bind:fileName={fileName} bind:fileContent={fileContent} bind:expectedOutput={expectedOutput}/>
                 <Logout bind:selectedStudent={selectedStudent}/>
             </div>
             {#if selectedStudent == null}
