@@ -4,6 +4,7 @@
 	import SubmissionStatusIcon from "./SubmissionStatusIcon.svelte";
 	import TestCases from "./TestCases.svelte";
 	import ButtonToolbar from "./ButtonToolbar.svelte";
+	import { getSubmissionStatus } from "$lib/scripts/output";
 
     let { tokenResponse = $bindable(), courseSelected = $bindable(), courseworkSelected = $bindable() }: {
         tokenResponse: any,
@@ -25,6 +26,7 @@
 
         monaco = await import('monaco-editor');
         const editorContainer = document.getElementById('editor');
+        console.log('Editor container:', editorContainer);
         if (editorContainer) {
             monacoEditor = monaco.editor.create(editorContainer, {
                 value: selectedStudent ? selectedStudent.javaContent : '',
@@ -33,6 +35,11 @@
                 minimap: { enabled: false },
                 scrollBeyondLastLine: false,
                 automaticLayout: true
+            });
+
+            monacoEditor.onDidChangeModelContent(() => {
+                if (selectedStudent)
+                    selectedStudent.javaContent = monacoEditor.getValue();
             });
         }
     });
@@ -133,7 +140,7 @@
                     });
                     const result = await response.text();
                     user.javaResponse = result;
-                    user.submissionStatus = getSubmissionStatus(result);
+                    user.submissionStatus = getSubmissionStatus(result, expectedOutput);
                     return { user, result };
                 } else {
                     return { user, result: null };
@@ -142,29 +149,14 @@
         );
     }
 
-    function getSubmissionStatus(output: string) {
-        console.log(output.replace("Program output:", "").trim(), expectedOutput.trim())
-        if (output.replace("Program output:", "").replaceAll(/\s/g, "").trim() != expectedOutput.replaceAll(/\s/g, "").trim())
-            return SubmissionStatus.WRONG_OUTPUT;
-        else if (output.startsWith('Compilation error'))
-            return SubmissionStatus.COMPILE_ERROR;
-        else if (output.startsWith('Runtime error'))
-            return SubmissionStatus.RUNTIME_ERROR;
-        else if (output.startsWith('Program output'))
-            return SubmissionStatus.SUCCESS;
-        else
-            return SubmissionStatus.UNKNOWN;
-    }
-
     let classroomStudentSubmissions = $state<any>(null);
 
     let selectedStudent: Student | undefined = $state(undefined);
 
-    $effect(() => {
+    function onChangeStudent() {
         if (monacoEditor && selectedStudent)
             monacoEditor.setValue(selectedStudent.javaContent);
-        console.log('Selected student changed:', selectedStudent);
-    });
+    }
 
     function getResultText(user: Student) {
         switch (user.submissionStatus) {
@@ -209,7 +201,7 @@
             {:else}
                 {#if classroomStudentSubmissions.studentSubmissions && classroomStudentSubmissions.studentSubmissions.length > 0}
                     {#each users as user}
-                        <button class:bg-gray-900={selectedStudent === user} class="border-b p-2 cursor-pointer w-full text-left flex items-center" onclick={() => selectedStudent = user}>
+                        <button class:bg-gray-900={selectedStudent === user} class="border-b p-2 cursor-pointer w-full text-left flex items-center" onclick={() => { selectedStudent = user; onChangeStudent(); }}>
                             <div class="flex flex-col">
                                 <p class="font-bold">{user.data.name?.fullName}</p>
                                 <p class="text-sm">{user.data.emailAddress}</p>
@@ -230,7 +222,7 @@
     <div class="w-2/3 h-full flex flex-col relative">
         <div class="h-full w-full overflow-hidden flex flex-col" class:hidden-editor={selectedStudent == null || selectedStudent.javaContent == ''}>
             <div class="w-full flex p-4 border-b z-50 gap-4">
-                <ButtonToolbar/>
+                <ButtonToolbar bind:selectedStudent={selectedStudent} {expectedOutput}/>
             </div>
             <div
                 id="editor"
