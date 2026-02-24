@@ -3,9 +3,10 @@
 	import { onMount } from "svelte";
 	import SubmissionStatusIcon from "./SubmissionStatusIcon.svelte";
 	import TestCases from "./TestCases.svelte";
-	import ButtonToolbar from "./ButtonToolbar.svelte";
     import Logout from "./Toolbar/Logout.svelte";
     import Rerun from "./Toolbar/Rerun.svelte";
+    import Run from "./Toolbar/Run.svelte";
+    import TestcasesBtn from "./Toolbar/TestcasesBtn.svelte";
 	import { getSubmissionStatus } from "$lib/scripts/output";
 
     let { tokenResponse = $bindable(), courseSelected = $bindable(), courseworkSelected = $bindable() }: {
@@ -224,11 +225,11 @@
     <div class="w-2/3 h-full flex flex-col relative">
         <div class="h-full w-full overflow-hidden flex flex-col">
             <div class="w-full flex p-4 border-b z-50 gap-4">
-                <ButtonToolbar bind:selectedStudent={selectedStudent} {expectedOutput}/>
-
                 <div class="ml-auto"></div>
-                <Logout bind:selectedStudent={selectedStudent}/>
                 <Rerun bind:selectedStudent={selectedStudent} {expectedOutput}/>
+                <Run/>
+                <TestcasesBtn/>
+                <Logout bind:selectedStudent={selectedStudent}/>
             </div>
             {#if selectedStudent == null}
                 <div class="flex-grow w-full flex items-center justify-around">
