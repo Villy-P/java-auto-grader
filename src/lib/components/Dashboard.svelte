@@ -3,6 +3,7 @@
 	import { onMount } from "svelte";
 	import SubmissionStatusIcon from "./SubmissionStatusIcon.svelte";
 	import TestCases from "./TestCases.svelte";
+    import RefreshCCW from "@lucide/svelte/icons/refresh-ccw";
 
     let { tokenResponse = $bindable(), courseSelected = $bindable(), courseworkSelected = $bindable() }: {
         tokenResponse: any,
@@ -227,11 +228,15 @@
         </div>
     </div>
     <div class="w-2/3 h-full flex flex-col relative">
-        <div
-            id="editor"
-            class="h-2/3 w-full overflow-hidden"
-            class:hidden-editor={selectedStudent == null || selectedStudent.javaContent == ''}
-        ></div>
+        <!-- <div class="h-2/3 w-full overflow-hidden"> -->
+            <div
+                id="editor"
+                class="h-full w-full overflow-hidden relative"
+                class:hidden-editor={selectedStudent == null || selectedStudent.javaContent == ''}
+            >
+                <button type="button" class="btn-icon preset-filled absolute right-5 bottom-5 w-fit z-50" title="Go" aria-label="Go"><RefreshCCW size={18} /></button>
+            </div>
+        <!-- </div> -->
 
         {#if selectedStudent == null}
             <div class="h-2/3 w-full flex items-center justify-around">
