@@ -5,6 +5,7 @@
 	import TestCases from "./TestCases.svelte";
 	import ButtonToolbar from "./ButtonToolbar.svelte";
     import Logout from "./Toolbar/Logout.svelte";
+    import Rerun from "./Toolbar/Rerun.svelte";
 	import { getSubmissionStatus } from "$lib/scripts/output";
 
     let { tokenResponse = $bindable(), courseSelected = $bindable(), courseworkSelected = $bindable() }: {
@@ -225,7 +226,9 @@
             <div class="w-full flex p-4 border-b z-50 gap-4">
                 <ButtonToolbar bind:selectedStudent={selectedStudent} {expectedOutput}/>
 
+                <div class="ml-auto"></div>
                 <Logout bind:selectedStudent={selectedStudent}/>
+                <Rerun bind:selectedStudent={selectedStudent} {expectedOutput}/>
             </div>
             {#if selectedStudent == null}
                 <div class="flex-grow w-full flex items-center justify-around">
