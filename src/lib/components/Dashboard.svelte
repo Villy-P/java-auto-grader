@@ -4,6 +4,7 @@
 	import SubmissionStatusIcon from "./SubmissionStatusIcon.svelte";
 	import TestCases from "./TestCases.svelte";
 	import ButtonToolbar from "./ButtonToolbar.svelte";
+    import Logout from "./Toolbar/Logout.svelte";
 	import { getSubmissionStatus } from "$lib/scripts/output";
 
     let { tokenResponse = $bindable(), courseSelected = $bindable(), courseworkSelected = $bindable() }: {
@@ -223,6 +224,8 @@
         <div class="h-full w-full overflow-hidden flex flex-col">
             <div class="w-full flex p-4 border-b z-50 gap-4">
                 <ButtonToolbar bind:selectedStudent={selectedStudent} {expectedOutput}/>
+
+                <Logout bind:selectedStudent={selectedStudent}/>
             </div>
             {#if selectedStudent == null}
                 <div class="flex-grow w-full flex items-center justify-around">
