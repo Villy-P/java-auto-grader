@@ -1,5 +1,4 @@
 <script lang="ts">
-    import LogOut from "@lucide/svelte/icons/log-out";
     import RefreshCCW from "@lucide/svelte/icons/refresh-ccw";
     import { Student, SubmissionStatus } from "$lib/scripts/user";
     import { Tooltip } from "flowbite-svelte";
@@ -9,13 +8,6 @@
         selectedStudent: Student | undefined,
         expectedOutput: string
     } = $props();
-
-    function logout() {
-        document.cookie.split(";").forEach(function(c) { 
-            document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); 
-        });
-        location.reload();
-    }
 
     async function rerunSubmission() {
         if (selectedStudent == null) return;
@@ -41,7 +33,8 @@
     }
 </script>
 
-<button type="button" class="btn-icon preset-filled w-fit h-fit z-50 ml-auto" onclick={rerunSubmission}><RefreshCCW size={14}/></button>
-<Tooltip placement="bottom">Re-run Student Submission</Tooltip>
-<button type="button" class="btn-icon preset-filled w-fit h-fit" onclick={logout}><LogOut size={14}/></button>
-<Tooltip placement="bottom">Sign out</Tooltip>
+{#if selectedStudent && selectedStudent.javaContent && selectedStudent.javaContent !== ''}
+    <button type="button" class="btn-icon preset-filled w-fit h-fit z-50" onclick={rerunSubmission}><RefreshCCW size={14}/></button>
+    <Tooltip placement="bottom">Re-run Student Submission</Tooltip>
+    <div class="h-full bg-white w-[1px]"></div>
+{/if}

@@ -2,9 +2,11 @@
 	import { Student, SubmissionStatus } from "$lib/scripts/user";
 	import { onMount } from "svelte";
 	import SubmissionStatusIcon from "./SubmissionStatusIcon.svelte";
-	import TestCases from "./TestCases.svelte";
-	import ButtonToolbar from "./ButtonToolbar.svelte";
-	import { getSubmissionStatus } from "$lib/scripts/output";
+	import TestCases from "./Toolbar/Testcases.svelte";
+    import Logout from "./Toolbar/Logout.svelte";
+    import Rerun from "./Toolbar/Rerun.svelte";
+    import Run from "./Toolbar/Run.svelte";
+	import { getSubmissionStatus, getResultText, getResultColor } from "$lib/scripts/output";
 
     let { tokenResponse = $bindable(), courseSelected = $bindable(), courseworkSelected = $bindable() }: {
         tokenResponse: any,
@@ -157,40 +159,6 @@
         if (monacoEditor && selectedStudent)
             monacoEditor.setValue(selectedStudent.javaContent);
     }
-
-    function getResultText(user: Student) {
-        switch (user.submissionStatus) {
-            case SubmissionStatus.NOT_SUBMITTED:
-                return "Not Submitted";
-            case SubmissionStatus.COMPILE_ERROR:
-                return "Compilation Error";
-            case SubmissionStatus.RUNTIME_ERROR:
-                return "Runtime Error";
-            case SubmissionStatus.WRONG_OUTPUT:
-                return "Wrong Output";
-            case SubmissionStatus.SUCCESS:
-                return "Success";
-            default:
-                return "Unknown";
-        }
-    }
-
-    function getResultColor(user: Student) {
-        switch (user.submissionStatus) {
-            case SubmissionStatus.NOT_SUBMITTED:
-                return "text-yellow-500";
-            case SubmissionStatus.COMPILE_ERROR:
-                return "text-red-500";
-            case SubmissionStatus.RUNTIME_ERROR:
-                return "text-red-500";
-            case SubmissionStatus.WRONG_OUTPUT:
-                return "text-orange-500";
-            case SubmissionStatus.SUCCESS:
-                return "text-green-500";
-            default:
-                return "text-gray-500";
-        }
-    }
 </script>
 
 <div class="w-full h-screen flex overflow-hidden">
@@ -215,30 +183,32 @@
             {/if}
         </div>
         <div class="w-full flex items-center justify-center space-x-2 p-2 border-t">
-            <TestCases bind:fileName={fileName} bind:fileContent={fileContent} bind:expectedOutput={expectedOutput}/>
-            <button type="button" class="btn preset-tonal-primary w-11/12" onclick={runAllJavaFiles}>Run all Java Files</button>
         </div>
     </div>
     <div class="w-2/3 h-full flex flex-col relative">
-        <div class="h-full w-full overflow-hidden flex flex-col" class:hidden-editor={selectedStudent == null || selectedStudent.javaContent == ''}>
-            <div class="w-full flex p-4 border-b z-50 gap-4">
-                <ButtonToolbar bind:selectedStudent={selectedStudent} {expectedOutput}/>
+        <div class="h-full w-full overflow-hidden flex flex-col">
+            <div class="w-full flex p-3 border-b z-50 gap-2">
+                <div class="ml-auto"></div>
+                <Rerun bind:selectedStudent={selectedStudent} {expectedOutput}/>
+                <Run bind:users={users} {expectedOutput}/>
+                <Testcases bind:fileName={fileName} bind:fileContent={fileContent} bind:expectedOutput={expectedOutput}/>
+                <Logout bind:selectedStudent={selectedStudent}/>
             </div>
+            {#if selectedStudent == null}
+                <div class="flex-grow w-full flex items-center justify-around">
+                    <p>Please select a student submission to view the code.</p>
+                </div>
+            {:else if selectedStudent.javaContent == ''}
+                <div class="flex-grow w-full flex items-center justify-around">
+                    <p>The selected student has not submitted any Java files.</p>
+                </div>
+            {/if}
             <div
                 id="editor"
                 class="flex-grow w-full overflow-hidden relative"
+                class:hidden-editor={selectedStudent == null || selectedStudent.javaContent == ''}
             ></div>
         </div>
-
-        {#if selectedStudent == null}
-            <div class="h-2/3 w-full flex items-center justify-around">
-                <p>Please select a student submission to view the code.</p>
-            </div>
-        {:else if selectedStudent.javaContent == ''}
-            <div class="h-2/3 w-full flex items-center justify-around">
-                <p>The selected student has not submitted any Java files.</p>
-            </div>
-        {/if}
 
         <div class="h-1/3 w-full border-t">
             {#if selectedStudent && selectedStudent.javaResponse}
