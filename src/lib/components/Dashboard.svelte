@@ -3,9 +3,7 @@
 	import { onMount } from "svelte";
 	import SubmissionStatusIcon from "./SubmissionStatusIcon.svelte";
 	import TestCases from "./TestCases.svelte";
-    import RefreshCCW from "@lucide/svelte/icons/refresh-ccw";
-	import Cookies from "./Cookies.svelte";
-	import { Tooltip } from "flowbite-svelte";
+	import ButtonToolbar from "./ButtonToolbar.svelte";
 
     let { tokenResponse = $bindable(), courseSelected = $bindable(), courseworkSelected = $bindable() }: {
         tokenResponse: any,
@@ -232,9 +230,7 @@
     <div class="w-2/3 h-full flex flex-col relative">
         <div class="h-full w-full overflow-hidden flex flex-col" class:hidden-editor={selectedStudent == null || selectedStudent.javaContent == ''}>
             <div class="w-full flex p-4 border-b z-50 gap-4">
-                <button type="button" class="btn-icon preset-filled w-fit z-50 ml-auto"><RefreshCCW size={18}/></button>
-                <Tooltip placement="bottom">Re-run Student Submission</Tooltip>
-                <Cookies/>
+                <ButtonToolbar/>
             </div>
             <div
                 id="editor"

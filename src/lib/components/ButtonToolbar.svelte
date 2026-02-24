@@ -1,9 +1,9 @@
 <script>
-	import Cookie from "@lucide/svelte/icons/cookie";
     import LogOut from "@lucide/svelte/icons/log-out";
+    import RefreshCCW from "@lucide/svelte/icons/refresh-ccw";
     import { Tooltip } from "flowbite-svelte";
 
-    function clearCookies() {
+    function logout() {
         document.cookie.split(";").forEach(function(c) { 
             document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); 
         });
@@ -11,6 +11,7 @@
     }
 </script>
 
-
-<button type="button" class="btn-icon preset-filled w-fit" onclick={clearCookies}><LogOut size={18} /></button>
+<button type="button" class="btn-icon preset-filled w-fit h-fit z-50 ml-auto"><RefreshCCW size={14}/></button>
+<Tooltip placement="bottom">Re-run Student Submission</Tooltip>
+<button type="button" class="btn-icon preset-filled w-fit h-fit" onclick={logout}><LogOut size={14}/></button>
 <Tooltip placement="bottom">Sign out</Tooltip>
