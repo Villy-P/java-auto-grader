@@ -191,7 +191,7 @@
                 <div class="ml-auto"></div>
                 <Rerun bind:selectedStudent={selectedStudent} {expectedOutput}/>
                 <Run bind:users={users} {expectedOutput}/>
-                <Testcases bind:fileName={fileName} bind:fileContent={fileContent} bind:expectedOutput={expectedOutput}/>
+                <TestCases bind:fileName={fileName} bind:fileContent={fileContent} bind:expectedOutput={expectedOutput}/>
                 <Logout bind:selectedStudent={selectedStudent}/>
             </div>
             {#if selectedStudent == null}
