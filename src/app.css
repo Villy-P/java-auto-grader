@@ -1,13 +1,13 @@
 @import 'tailwindcss';
+@import '@valerius_petrini/corekit-ui/layout.css';
 @plugin '@tailwindcss/forms';
 @plugin '@tailwindcss/typography';
 @plugin 'flowbite/plugin';
 
-@import '@skeletonlabs/skeleton';
-@import '@skeletonlabs/skeleton-svelte';
-@import '@skeletonlabs/skeleton/themes/cerberus';
 
 @source '../node_modules/@valerius_petrini/corekit-ui/';
+
+@custom-variant dark (&:where(.dark, .dark *));
 
 [role="tooltip"] {
     background-color: rgb(31, 33, 31);

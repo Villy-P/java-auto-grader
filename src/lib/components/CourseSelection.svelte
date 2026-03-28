@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { FloatingSelect } from "@valerius_petrini/corekit-ui";
+
     let { tokenResponse = $bindable(), courseSelected = $bindable(), courseworkSelected = $bindable() }: {
         tokenResponse: any,
         courseSelected: gapi.client.classroom.Course | null,
@@ -25,14 +27,7 @@
 {:then courses} 
     <h2 class="text-2xl mt-4 mb-2">First, select a course:</h2>
     {#if courses && courses.courses && courses.courses.length > 0}
-        <label class="label">
-            <span class="label-text">Courses</span>
-            <select class="select" bind:value={courseSelected}>
-                {#each courses.courses as course}
-                    <option value={course}>{course.name}</option>
-                {/each}
-            </select>
-        </label>
+        <FloatingSelect options={courses.courses.map((c) => ({ value: c, label: c.name || "" }))} bind:value={courseSelected} divName="w-full">Courses</FloatingSelect>
     {:else}
         <p>Couldn't find a course you teach.</p>
     {/if}
