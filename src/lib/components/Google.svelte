@@ -1,6 +1,8 @@
 <script lang="ts">
     import { onMount } from "svelte";
 
+    import { Button } from "@valerius_petrini/corekit-ui";
+
     let tokenClient: any;
     let { tokenResponse = $bindable() } = $props();
 
@@ -35,8 +37,8 @@
 </script>
 
 {#if !tokenResponse}
-    <button type="button" class="btn preset-tonal-primary flex items-center justify-center" onclick={requestAccessToken}>
+    <Button color="blue" class="flex-center" onclick={requestAccessToken}>
         <img src="/google.svg" alt="Google Logo" class="w-6 h-6 mr-2"/>
         <span>Sign in with Google</span>
-    </button>
+    </Button>
 {/if}

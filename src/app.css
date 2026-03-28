@@ -7,8 +7,14 @@
 @import '@skeletonlabs/skeleton-svelte';
 @import '@skeletonlabs/skeleton/themes/cerberus';
 
+@source '../node_modules/@valerius_petrini/corekit-ui/';
+
 [role="tooltip"] {
     background-color: rgb(31, 33, 31);
+}
+
+.flex-center {
+    @apply flex items-center justify-center;
 }
 
 @source "../node_modules/flowbite-svelte/dist";
