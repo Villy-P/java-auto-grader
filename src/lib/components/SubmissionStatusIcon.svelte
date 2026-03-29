@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { SubmissionStatus } from "$lib/scripts/user";
+	import { Button } from "@valerius_petrini/corekit-ui";
 	import { Tooltip } from "flowbite-svelte";
 
     let { submissionStatus = $bindable() }: {
@@ -7,7 +8,7 @@
     } = $props();
 </script>
 
-<div class="flex items-center justify-center ml-auto mr-3 h-5 w-5">
+<Button size={8} icon class="ml-auto mr-3">
     {#if submissionStatus === SubmissionStatus.NOT_SUBMITTED}
         <span class="text-yellow-500">❔</span>
         <Tooltip placement="right">Not submitted</Tooltip>
@@ -21,4 +22,4 @@
         <span class="text-green-500">✅</span>
         <Tooltip placement="right">Correct submission</Tooltip>
     {/if}
-</div>
+</Button>
