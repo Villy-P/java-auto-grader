@@ -7,6 +7,7 @@
     import Rerun from "./Toolbar/Rerun.svelte";
     import Run from "./Toolbar/Run.svelte";
 	import { getSubmissionStatus, getResultText, getResultColor } from "$lib/scripts/output";
+	import { Button } from "@valerius_petrini/corekit-ui";
 
     let { tokenResponse = $bindable(), courseSelected = $bindable(), courseworkSelected = $bindable() }: {
         tokenResponse: any,
@@ -165,7 +166,7 @@
     <div class="w-1/3 min-h-0 h-full border-r flex flex-col">
         <div class="grow overflow-y-auto">
             {#if classroomStudentSubmissions === null}
-                <p class="flex items-center justify-center w-full h-full">Loading student submissions...</p>
+                <p class="flex-center w-full h-full">Loading student submissions...</p>
             {:else}
                 {#if classroomStudentSubmissions.studentSubmissions && classroomStudentSubmissions.studentSubmissions.length > 0}
                     {#each users as user}
@@ -222,8 +223,8 @@
                     {/if}
                     <h3 class="text-xl mt-4 mb-2">Override Result:</h3>
                     <div class="flex gap-4">
-                        <button onclick={() => selectedStudent!.submissionStatus = SubmissionStatus.SUCCESS} type="button" class="btn preset-filled-success-500">Should be correct</button>
-                        <button onclick={() => selectedStudent!.submissionStatus = SubmissionStatus.WRONG_OUTPUT} type="button" class="btn preset-filled-error-500">Should be incorrect</button>
+                        <Button color="lightgreen" onclick={() => selectedStudent!.submissionStatus = SubmissionStatus.SUCCESS}>Should be correct</Button>
+                        <Button color="red" onclick={() => selectedStudent!.submissionStatus = SubmissionStatus.WRONG_OUTPUT}>Should be incorrect</Button>
                     </div>
                 </div>
             {/if}
