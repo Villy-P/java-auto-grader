@@ -1,5 +1,6 @@
 <script lang="ts">
     import FlaskConical from "@lucide/svelte/icons/flask-conical";
+	import { Button, FloatingInput } from "@valerius_petrini/corekit-ui";
     import { Tooltip, Modal } from "flowbite-svelte";
     import { onMount } from "svelte";
 
@@ -47,25 +48,16 @@
     })
 </script>
 
-<button type="button" class="btn-icon preset-filled w-fit h-fit" onclick={() => modalOpen = true}><FlaskConical size={14}/></button>
+<Button color="sub" onclick={() => modalOpen = true} icon><FlaskConical size={14}/></Button>
 <Tooltip placement="bottom">Edit Testcases</Tooltip>
 
 <Modal title="Test Cases" bind:open={modalOpen}>
-    <label class="label">
-        <span class="label-text">File Name</span>
-        <input class="input" type="text" placeholder="e.x. test.txt" bind:value={fileName}/>
-    </label>
-    <label class="label">
-        <span class="label-text">File Content</span>
-        <textarea class="textarea" rows="4" bind:value={fileContent}></textarea>
-    </label>
-    <label class="label">
-        <span class="label-text">Expected Output</span>
-        <textarea class="textarea" rows="4" bind:value={expectedOutput}></textarea>
-    </label>
+    <FloatingInput bind:value={fileName}>File Name</FloatingInput>
+    <FloatingInput bind:value={fileContent} isTextArea>File Content</FloatingInput>
+    <FloatingInput bind:value={expectedOutput} isTextArea>Expected Output</FloatingInput>
 
     {#snippet footer()}
-        <button class="btn btn-primary" onclick={() => { modalOpen = false; updateTestCases(); }}>Update Test Cases</button>
-        <button class="btn btn-ghost" onclick={() => { modalOpen = false; deleteTestCases(); }}>Delete Test Cases</button>
+        <Button color="blue" onclick={() => { modalOpen = false; updateTestCases(); }}>Update Test Cases</Button>
+        <Button color="sub" onclick={() => { modalOpen = false; deleteTestCases(); }}>Delete Test Cases</Button>
     {/snippet}
 </Modal>

@@ -2,6 +2,7 @@
     import LogOut from "@lucide/svelte/icons/log-out";
     import { Student, SubmissionStatus } from "$lib/scripts/user";
     import { Tooltip } from "flowbite-svelte";
+	import { Button } from "@valerius_petrini/corekit-ui";
 
     let { selectedStudent = $bindable() }: {
         selectedStudent: Student | undefined,
@@ -15,5 +16,5 @@
     }
 </script>
 
-<button type="button" class="btn-icon preset-filled w-fit h-fit" onclick={logout}><LogOut size={14}/></button>
+<Button color="sub" onclick={logout} icon><LogOut size={14}/></Button>
 <Tooltip placement="bottom">Sign out</Tooltip>

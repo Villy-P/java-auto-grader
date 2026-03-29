@@ -3,6 +3,7 @@
     import { Tooltip } from "flowbite-svelte";
     import { Student, SubmissionStatus } from "$lib/scripts/user";
     import { getSubmissionStatus } from "$lib/scripts/output";
+	import { Button } from "@valerius_petrini/corekit-ui";
 
     let { users = $bindable(), expectedOutput }: {
         users: Student[],
@@ -41,5 +42,5 @@
     }
 </script>
 
-<button type="button" class="btn-icon preset-filled w-fit h-fit" onclick={runAllJavaFiles}><Play size={14}/></button>
+<Button color="sub" onclick={runAllJavaFiles} icon><Play size={14}/></Button>
 <Tooltip placement="bottom">Run all Java Files</Tooltip>
