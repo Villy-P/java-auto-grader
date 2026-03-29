@@ -17,5 +17,9 @@
     @apply flex items-center justify-center;
 }
 
+p, h1, h2, h3, h4, h5, h6 {
+    @apply text-main-text;
+}
+
 @source "../node_modules/flowbite-svelte/dist";
 @source "../node_modules/flowbite-svelte-icons/dist";

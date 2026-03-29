@@ -3,6 +3,7 @@
 	import CourseWorkSelection from "$lib/components/CourseWorkSelection.svelte";
 	import Dashboard from "$lib/components/Dashboard.svelte";
 	import Google from "$lib/components/Google.svelte";
+	import { Button } from "@valerius_petrini/corekit-ui";
 
     let tokenResponse: any = $state(null);
 
@@ -33,7 +34,7 @@
 
                     {#if courseworkSelected}
                         <p class="my-4">You have selected coursework {courseworkSelected.title} under course {courseSelected.name}. Proceeding will take you to the grading dashboard. If you wish to return here, reload the page.</p>
-                        <button type="button" class="btn preset-filled-primary-500" onclick={proceedToDashboard}>Go to dashboard</button>
+                        <Button color="blue" onclick={proceedToDashboard}>Go to dashboard</Button>
                     {/if}
                 {/if}
             </div>
