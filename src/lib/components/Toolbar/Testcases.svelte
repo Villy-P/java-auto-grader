@@ -1,6 +1,6 @@
 <script lang="ts">
     import FlaskConical from "@lucide/svelte/icons/flask-conical";
-	import { Button, FloatingInput } from "@valerius_petrini/corekit-ui";
+	import { Button, Input } from "@valerius_petrini/corekit-ui";
     import { Tooltip, Modal } from "flowbite-svelte";
     import { onMount } from "svelte";
 
@@ -52,9 +52,9 @@
 <Tooltip placement="bottom">Edit Testcases</Tooltip>
 
 <Modal title="Test Cases" bind:open={modalOpen}>
-    <FloatingInput bind:value={fileName}>File Name</FloatingInput>
-    <FloatingInput bind:value={fileContent} isTextArea>File Content</FloatingInput>
-    <FloatingInput bind:value={expectedOutput} isTextArea>Expected Output</FloatingInput>
+    <Input bind:value={fileName}>File Name</Input>
+    <Input bind:value={fileContent} isTextArea>File Content</Input>
+    <Input bind:value={expectedOutput} isTextArea>Expected Output</Input>
 
     {#snippet footer()}
         <Button color="blue" onclick={() => { modalOpen = false; updateTestCases(); }}>Update Test Cases</Button>

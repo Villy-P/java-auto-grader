@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { FloatingSelect } from "@valerius_petrini/corekit-ui";
+	import { Select, Skeleton } from "@valerius_petrini/corekit-ui";
 
     let { tokenResponse = $bindable(), courseSelected = $bindable(), courseworkSelected = $bindable() }: {
         tokenResponse: any,
@@ -23,11 +23,16 @@
 </script>
 
 {#await classroomCourses}
-    <p>Loading your courses...</p>
+    <Skeleton></Skeleton>
 {:then courses} 
-    <h2 class="text-2xl mt-4 mb-2">First, select a course:</h2>
     {#if courses && courses.courses && courses.courses.length > 0}
-        <FloatingSelect options={courses.courses.map((c) => ({ value: c, label: c.name || "" }))} bind:value={courseSelected} divName="w-full">Courses</FloatingSelect>
+        <Select 
+            placeholder="Select a course"
+            label="Course"
+            options={courses.courses.map((c) => ({ value: c, label: c.name || "" }))} 
+            bind:value={courseSelected}>
+            Courses
+        </Select>
     {:else}
         <p>Couldn't find a course you teach.</p>
     {/if}

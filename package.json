@@ -51,7 +51,7 @@
 	"dependencies": {
 		"@bithero/monaco-editor-vite-plugin": "^1.0.3",
 		"@lucide/svelte": "^0.546.0",
-		"@valerius_petrini/corekit-ui": "^0.1.47",
+		"@valerius_petrini/corekit-ui": "^0.1.66",
 		"child_process": "^1.0.2",
 		"cors": "^2.8.5",
 		"express": "^5.1.0",
