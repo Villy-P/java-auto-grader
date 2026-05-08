@@ -1,7 +1,7 @@
 <script lang="ts">
     import FlaskConical from "@lucide/svelte/icons/flask-conical";
-	import { Button, Input } from "@valerius_petrini/corekit-ui";
-    import { Tooltip, Modal } from "flowbite-svelte";
+	import { Button, Input, Modal, Text } from "@valerius_petrini/corekit-ui";
+    import { Tooltip } from "flowbite-svelte";
     import { onMount } from "svelte";
 
     let { fileName = $bindable(), fileContent = $bindable(), expectedOutput = $bindable() } = $props();
@@ -51,13 +51,14 @@
 <Button color="sub" onclick={() => modalOpen = true} icon><FlaskConical size={14}/></Button>
 <Tooltip placement="bottom">Edit Testcases</Tooltip>
 
-<Modal title="Test Cases" bind:open={modalOpen}>
-    <Input bind:value={fileName}>File Name</Input>
-    <Input bind:value={fileContent} isTextArea>File Content</Input>
-    <Input bind:value={expectedOutput} isTextArea>Expected Output</Input>
+<Modal bind:open={modalOpen} class="flex flex-col gap-2">
+    <Text tag="h2" class="text-2xl mb-4">Edit Test Cases</Text>
+    <Input bind:value={fileName} label="File Name" placeholder="Enter file name"/>
+    <Input bind:value={fileContent} isTextArea label="File Content" placeholder="Enter file content"/>
+    <Input bind:value={expectedOutput} isTextArea label="Expected Output" placeholder="Enter expected output"/>
 
-    {#snippet footer()}
+    <div class="flex gap-4 mt-4">
         <Button color="blue" onclick={() => { modalOpen = false; updateTestCases(); }}>Update Test Cases</Button>
         <Button color="sub" onclick={() => { modalOpen = false; deleteTestCases(); }}>Delete Test Cases</Button>
-    {/snippet}
+    </div>
 </Modal>

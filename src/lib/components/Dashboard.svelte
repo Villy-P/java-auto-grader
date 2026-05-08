@@ -170,7 +170,7 @@
             {:else}
                 {#if classroomStudentSubmissions.studentSubmissions && classroomStudentSubmissions.studentSubmissions.length > 0}
                     {#each users as user}
-                        <button class:bg-gray-900={selectedStudent === user} class="border-b p-2 cursor-pointer w-full text-left flex items-center" onclick={() => { selectedStudent = user; onChangeStudent(); }}>
+                        <button class:bg-gray-900={selectedStudent === user} class="border-b border-b-text-main p-2 cursor-pointer w-full text-left flex items-center" onclick={() => { selectedStudent = user; onChangeStudent(); }}>
                             <div class="flex flex-col">
                                 <p class="font-bold">{user.data.name?.fullName}</p>
                                 <p class="text-sm">{user.data.emailAddress}</p>
@@ -216,15 +216,15 @@
                 <div class="p-4 h-full overflow-y-auto">
                     <h2 class="text-2xl mb-2">Output for {selectedStudent.data.name?.fullName}:</h2>
                     <p class={getResultColor(selectedStudent)}>{getResultText(selectedStudent)}</p>
-                    <pre class="bg-gray-800 text-white p-4 rounded whitespace-pre-wrap">{selectedStudent.javaResponse}</pre>
+                    <pre class="bg-sub-background text-white p-4 rounded whitespace-pre-wrap">{selectedStudent.javaResponse}</pre>
                     {#if getResultText(selectedStudent) !== "Success"}
                         <h3 class="text-xl mt-4 mb-2">Expected Output:</h3>
-                        <pre class="bg-gray-800 text-white p-4 rounded whitespace-pre-wrap">{expectedOutput}</pre>
+                        <pre class="bg-sub-background text-white p-4 rounded whitespace-pre-wrap">{expectedOutput}</pre>
                     {/if}
                     <h3 class="text-xl mt-4 mb-2">Override Result:</h3>
                     <div class="flex gap-4">
-                        <Button color="lightgreen" onclick={() => selectedStudent!.submissionStatus = SubmissionStatus.SUCCESS}>Should be correct</Button>
-                        <Button color="red" onclick={() => selectedStudent!.submissionStatus = SubmissionStatus.WRONG_OUTPUT}>Should be incorrect</Button>
+                        <Button color="success" onclick={() => selectedStudent!.submissionStatus = SubmissionStatus.SUCCESS}>Should be correct</Button>
+                        <Button color="error" onclick={() => selectedStudent!.submissionStatus = SubmissionStatus.WRONG_OUTPUT}>Should be incorrect</Button>
                     </div>
                 </div>
             {/if}
