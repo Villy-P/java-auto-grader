@@ -1,38 +1,25 @@
-# sv
+# Java Auto Grader
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+Java Auto Grader is a tool that reads data from Google Classroom and automatically runs all students Java files against testcases.
 
-## Creating a project
+## Setup
 
-If you're seeing this, you've probably already done this step. Congrats!
+> Make sure you've installed [`Node JS`](https://nodejs.org/en)
 
-```sh
-# create a new project in the current directory
-npx sv create
+To use Java Auto Grader, clone the repo and run these commands:
 
-# create a new project in my-app
-npx sv create my-app
-```
-
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```sh
+``` bash
+npm install
 npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
 ```
 
-## Building
+Open the link at [localhost:5173](localhost:5173) and input a class and an assignment.
 
-To create a production version of your app:
+## Features
 
-```sh
-npm run build
-```
+When you are at the dashboard, you have a few options as to what to do, each in the top left corner:
 
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+* Edit Testcases (Flash Icon) - Here you can add text files that will be added alongside the students Java files. Your students can access these through `new File("textfile.txt")`
+* Run all Java files (Play Icon) - Runs every Java file and checks it against the test case.
+* Rerun Java file (Reload Icon) - Reruns the current Java file. You can make quick edits in the editor then rerun the submission.
+* Sign Out (Exit Icon) - Signs out of the Google Account you're currently signed into. To pick a different assignment, reload the page.
